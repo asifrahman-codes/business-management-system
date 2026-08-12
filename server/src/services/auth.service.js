@@ -2,21 +2,21 @@ const AppError = require("../utils/app-error.util");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 
-const registerUser = async ({ name, email, password, role }) => {
+const registerUser = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
     throw new AppError(
-  "User with this email already exists",
-  409
-);
-}
+      "User with this email already exists",
+      409
+    );
+  }
 
   const user = await User.create({
     name,
     email,
     password,
-    role,
+    role: "cashier",
   });
 
   return user;

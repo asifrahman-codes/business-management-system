@@ -4,10 +4,16 @@ const errorMiddleware = (err, req, res, next) => {
   console.error(err);
 
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+    const response = {
       success: false,
       message: err.message,
-    });
+    };
+
+    if (err.errors) {
+      response.errors = err.errors;
+    }
+
+    return res.status(err.statusCode).json(response);
   }
 
   return res.status(500).json({
