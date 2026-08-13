@@ -1,5 +1,5 @@
 const AppError = require("../utils/app-error.util");
-const User = require("../models/User");
+const User = require("../models/User.model");
 const generateToken = require("../utils/generateToken");
 
 const registerUser = async ({ name, email, password }) => {

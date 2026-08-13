@@ -3,6 +3,8 @@ const {
   loginUser,
 } = require("../services/auth.service");
 
+const formatUserResponse = require("../utils/user-response.util");
+
 const asyncHandler = require("../utils/async-handler.util");
 
 const register = asyncHandler(async (req, res) => {
@@ -27,16 +29,19 @@ const login = asyncHandler(async (req, res) => {
     success: true,
     message: "Login successful",
     token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
+    user: formatUserResponse(user),
   });
 });
+
+const getCurrentUser = (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: formatUserResponse(req.user),
+  });
+};
 
 module.exports = {
   register,
   login,
+  getCurrentUser,
 };
