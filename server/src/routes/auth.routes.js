@@ -11,10 +11,10 @@ const validate = require("../middleware/validate.middleware");
 const {
   registerSchema,
   loginSchema,
-} = require("../validations/auth.validation");
+} = require("../validators/auth.validator");
 
 const {
-  protect,
+  authenticate,
 } = require("../middleware/auth.middleware");
 
 const router = express.Router();
@@ -33,7 +33,7 @@ router.post(
 
 router.get(
   "/me",
-  protect,
+  authenticate,
   getCurrentUser
 );
 

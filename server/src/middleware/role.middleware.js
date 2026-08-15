@@ -1,6 +1,6 @@
-const AppError = require("../utils/app-error.util");
+const AppError = require("../utils/app-error.util"); 
 
-const requireRole = (...allowedRoles) => {
+const authorize = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
       return next(
@@ -24,6 +24,4 @@ const requireRole = (...allowedRoles) => {
   };
 };
 
-module.exports = {
-  requireRole,
-};
+module.exports = authorize;

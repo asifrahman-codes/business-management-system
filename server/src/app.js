@@ -9,6 +9,8 @@ const authRoutes = require("./routes/auth.Routes");
 
 const AppError = require("./utils/app-error.util");
 
+const userRoutes = require("./routes/user.routes");
+
 app.use(cors());
 app.use(express.json());
 
@@ -26,6 +28,11 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+app.use(
+  "/api/users",
+  userRoutes
+);
 
 
 app.use((req, res, next) => {

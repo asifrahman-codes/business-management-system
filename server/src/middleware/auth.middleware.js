@@ -3,27 +3,58 @@ const User = require("../models/User.model");
 const AppError = require("../utils/app-error.util");
 const env = require("../config/env.config");
 
-const protect = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const authorization =
+      req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authorization) {
       throw new AppError(
         "Authentication required",
         401
       );
     }
 
-    const token = authHeader.split(" ")[1];
+    const parts =
+      authorization.split(" ");
 
-    const decoded = jwt.verify(
-  token,
-  env.jwtSecret
-);
+    if (
+      parts.length !== 2 ||
+      parts[0] !== "Bearer"
+    ) {
+      throw new AppError(
+        "Invalid authentication format",
+        401
+      );
+    }
 
-    const user = await User.findById(
-      decoded.userId
-    ).select("-password");
+    const token = parts[1];
+
+    let decoded;
+
+    try {
+      decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+    } catch (error) {
+      if (
+        error.name === "TokenExpiredError" ||
+        error.name === "JsonWebTokenError"
+      ) {
+        throw new AppError(
+          "Invalid or expired token",
+          401
+        );
+      }
+
+      throw error;
+    }
+
+    const user =
+      await userRepository.findById(
+        decoded.userId
+      );
 
     if (!user) {
       throw new AppError(
@@ -34,7 +65,7 @@ const protect = async (req, res, next) => {
 
     if (!user.isActive) {
       throw new AppError(
-        "User account is inactive",
+        "Account is inactive",
         401
       );
     }
@@ -43,19 +74,10 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (error) {
-    if (error instanceof AppError) {
-      return next(error);
-    }
-
-    return next(
-      new AppError(
-        "Invalid or expired token",
-        401
-      )
-    );
+    next(error);
   }
 };
 
 module.exports = {
-  protect,
+  authenticate
 };

@@ -1,24 +1,20 @@
-const AppError = require("../utils/app-error.util");
+const errorMiddleware = (
+  error,
+  req,
+  res,
+  next
+) => {
+  const statusCode =
+    error.statusCode || 500;
 
-const errorMiddleware = (err, req, res, next) => {
-  console.error(err);
+  const message =
+    error.statusCode
+      ? error.message
+      : "Internal server error";
 
-  if (err instanceof AppError) {
-    const response = {
-      success: false,
-      message: err.message,
-    };
-
-    if (err.errors) {
-      response.errors = err.errors;
-    }
-
-    return res.status(err.statusCode).json(response);
-  }
-
-  return res.status(500).json({
+  return res.status(statusCode).json({
     success: false,
-    message: "Internal server error",
+    message,
   });
 };
 
