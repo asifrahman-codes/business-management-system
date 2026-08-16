@@ -1,11 +1,7 @@
-const {
-  registerUser,
-  loginUser,
-} = require("../services/auth.service");
-
+const { registerUser, loginUser } = require("../services/auth.service");
 const formatUserResponse = require("../utils/user-response.util");
-
 const asyncHandler = require("../utils/async-handler.util");
+const User = require("../models/User.model");
 
 const register = asyncHandler(async (req, res) => {
   const user = await registerUser(req.body);

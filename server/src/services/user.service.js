@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const AppError = require("../utils/app-error.util");
 const userRepository = require("../repositories/user.repository");
+const getQueryOptions = require("../utils/query-options");
+const { USER_SORT_FIELDS } = require("../constants/user.constants");
 
 const createUser = async ({
   name,
@@ -53,8 +55,21 @@ const createUser = async ({
   return userObject;
 };
 
-const getUsers = async () => {
-  return userRepository.findAll();
+const getUsers = async (query) => {
+  const options =
+    getQueryOptions(query);
+
+  if (
+    !USER_SORT_FIELDS.includes(
+      options.sortBy
+    )
+  ) {
+    options.sortBy = "createdAt";
+  }
+
+  return userRepository.findUsers(
+    options
+  );
 };
 
 const getUserById = async (userId) => {

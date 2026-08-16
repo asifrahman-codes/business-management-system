@@ -18,6 +18,59 @@ const findAll = async () => {
   return User.find();
 };
 
+const findUsers = async ({
+  skip,
+  limit,
+  search,
+  sortBy,
+  sortOrder,
+}) => {
+  const filter = {};
+
+  if (search) {
+    filter.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        email: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  const [users, total] =
+    await Promise.all([
+      User.find(filter)
+        .select("-password")
+        .sort({
+          [sortBy]: sortOrder,
+        })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      User.countDocuments(filter),
+    ]);
+
+  return {
+    data: users,
+    pagination: {
+      total,
+      page: Math.floor(skip / limit) + 1,
+      limit,
+      totalPages: Math.ceil(
+        total / limit
+      ),
+    },
+  };
+};
+
 const create = async (userData) => {
   return User.create(userData);
 };
@@ -52,4 +105,5 @@ module.exports = {
   create,
   updateById,
   updateStatus,
+  findUsers
 };

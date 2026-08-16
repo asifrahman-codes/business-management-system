@@ -15,12 +15,15 @@ const createUser = asyncHandler(
 
 const getUsers = asyncHandler(
   async (req, res) => {
-    const users =
-      await userService.getUsers();
+    const result =
+      await userService.getUsers(
+        req.query
+      );
 
     return res.status(200).json({
       success: true,
-      data: users,
+      data: result.data,
+      pagination: result.pagination,
     });
   }
 );
