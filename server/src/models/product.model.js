@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      maxlength: 150,
     },
 
     sku: {
@@ -14,6 +15,7 @@ const productSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       uppercase: true,
+      maxlength: 50,
     },
 
     costPrice: {
@@ -46,6 +48,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      maxlength: 30,
     },
 
     expiryDate: {
@@ -69,6 +72,12 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+productSchema.index({ name: 1 });
+productSchema.index({ category: 1 });
+productSchema.index({ supplier: 1 });
+productSchema.index({ expiryDate: 1 });
+productSchema.index({ quantityInStock: 1 });
 
 const Product = mongoose.model(
   "Product",

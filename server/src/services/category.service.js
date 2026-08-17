@@ -1,6 +1,9 @@
 const categoryRepository =
   require("../repositories/category.repository");
 
+const productRepository =
+  require("../repositories/product.repository");
+
 const AppError =
   require("../utils/app-error");
 
@@ -77,6 +80,18 @@ const updateCategory = async (
 
   return updatedCategory;
 };
+
+const productsUsingCategory =
+  await productRepository.findByCategory(
+    id
+  );
+
+if (productsUsingCategory) {
+  throw new AppError(
+    "Cannot delete category because products are using it",
+    409
+  );
+}
 
 const deleteCategory = async (id) => {
   const category =

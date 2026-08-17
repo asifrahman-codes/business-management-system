@@ -19,6 +19,9 @@ const getSuppliers = async (query) => {
   const options =
     getQueryOptions(query);
 
+const productRepository =
+  require("../repositories/product.repository");
+
   if (
     !SUPPLIER_SORT_FIELDS.includes(
       options.sortBy
@@ -78,6 +81,18 @@ const updateSupplier = async (
     data
   );
 };
+
+const productsUsingSupplier =
+  await productRepository.findBySupplier(
+    id
+  );
+
+if (productsUsingSupplier) {
+  throw new AppError(
+    "Cannot delete supplier because products are using it",
+    409
+  );
+}
 
 const deleteSupplier = async (id) => {
   const supplier =

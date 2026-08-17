@@ -3,7 +3,7 @@ const express = require("express");
 const supplierController =
   require("../controllers/supplier.controller");
 
-const authenticate =
+const {authenticate} =
   require("../middleware/auth.middleware");
 
 const authorize =

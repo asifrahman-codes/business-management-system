@@ -11,6 +11,8 @@ const AppError = require("./utils/app-error.util");
 
 const supplierRoutes = require("./routes/supplier.routes");
 
+const productRoutes = require("./routes/product.routes");
+
 app.use(cors());
 app.use(express.json());
 
@@ -33,6 +35,11 @@ app.use("/api/users", userRoutes);
 app.use(
   "/api/suppliers",
   supplierRoutes
+);
+
+app.use(
+  "/api/products",
+  productRoutes
 );
 
 app.use((req, res, next) => {
