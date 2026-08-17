@@ -75,10 +75,23 @@ const deleteProduct = asyncHandler(
   }
 );
 
+const getInventorySummary =
+  asyncHandler(async (req, res) => {
+    const summary =
+      await productService
+        .getInventorySummary();
+
+    return res.status(200).json({
+      success: true,
+      data: summary,
+    });
+  });
+
 module.exports = {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
   deleteProduct,
+  getInventorySummary,
 };

@@ -11,16 +11,18 @@ const {
   SUPPLIER_SORT_FIELDS,
 } = require("../constants/supplier.constants");
 
+const productRepository =
+  require("../repositories/product.repository");
+
+
 const createSupplier = async (data) => {
   return supplierRepository.create(data);
 };
 
+
 const getSuppliers = async (query) => {
   const options =
     getQueryOptions(query);
-
-const productRepository =
-  require("../repositories/product.repository");
 
   if (
     !SUPPLIER_SORT_FIELDS.includes(
@@ -48,6 +50,7 @@ const productRepository =
   };
 };
 
+
 const getSupplierById = async (id) => {
   const supplier =
     await supplierRepository.findById(id);
@@ -61,6 +64,7 @@ const getSupplierById = async (id) => {
 
   return supplier;
 };
+
 
 const updateSupplier = async (
   id,
@@ -82,17 +86,6 @@ const updateSupplier = async (
   );
 };
 
-const productsUsingSupplier =
-  await productRepository.findBySupplier(
-    id
-  );
-
-if (productsUsingSupplier) {
-  throw new AppError(
-    "Cannot delete supplier because products are using it",
-    409
-  );
-}
 
 const deleteSupplier = async (id) => {
   const supplier =
@@ -105,8 +98,19 @@ const deleteSupplier = async (id) => {
     );
   }
 
+  const productsUsingSupplier =
+    await productRepository.findBySupplier(id);
+
+  if (productsUsingSupplier.length > 0) {
+    throw new AppError(
+      "Cannot delete supplier because products are using it",
+      409
+    );
+  }
+
   return supplierRepository.deleteById(id);
 };
+
 
 module.exports = {
   createSupplier,

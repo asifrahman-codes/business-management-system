@@ -80,10 +80,24 @@ const getProducts = async (query) => {
     options.sortBy = "createdAt";
   }
 
+  const filters = {
+    category: query.category,
+    supplier: query.supplier,
+    lowStock:
+      query.lowStock === "true",
+    expired:
+      query.expired === "true",
+    expiringWithin:
+      query.expiringWithin !== undefined
+        ? Number(query.expiringWithin)
+        : undefined,
+  };
+
   const result =
-    await productRepository.findAll(
-      options
-    );
+    await productRepository.findAll({
+      ...options,
+      ...filters,
+    });
 
   return {
     data: result.data,
@@ -97,6 +111,46 @@ const getProducts = async (query) => {
     },
   };
 };
+
+
+
+const getExpiringWithin =
+  (value) => {
+    if (value === undefined) {
+      return undefined;
+    }
+
+    const days = Number(value);
+
+    if (
+      !Number.isInteger(days) ||
+      days < 0
+    ) {
+      throw new AppError(
+        "expiringWithin must be a non-negative integer",
+        400
+      );
+    }
+
+    return days;
+
+const filters = {
+  category: query.category,
+  supplier: query.supplier,
+
+  lowStock:
+    query.lowStock === "true",
+
+  expired:
+    query.expired === "true",
+
+  expiringWithin:
+    getExpiringWithin(
+      query.expiringWithin
+    ),
+};
+  };
+
 
 const getProductById = async (id) => {
   const product =
@@ -217,6 +271,12 @@ const isProductLowStock = (product) => {
   );
 };
 
+const getInventorySummary =
+  async () => {
+    return productRepository
+      .getInventorySummary();
+  };
+
 module.exports = {
   createProduct,
   getProducts,
@@ -224,4 +284,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   isProductLowStock,
+  getInventorySummary,
 };

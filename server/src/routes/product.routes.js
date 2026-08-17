@@ -45,6 +45,21 @@ router.post(
   productController.createProduct
 );
 
+router.get(
+  "/inventory-summary",
+  authenticate,
+  authorize("admin"),
+  productController.getInventorySummary
+);
+
+router.get(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  validateObjectId(),
+  productController.getProductById
+);
+
 router.patch(
   "/:id",
   authenticate,

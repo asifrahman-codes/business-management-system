@@ -10,6 +10,11 @@ const findAll = async ({
   search,
   sortBy,
   sortOrder,
+  category,
+  supplier,
+  lowStock,
+  expired,
+  expiringWithin,
 }) => {
   const filter = {};
 
@@ -28,6 +33,46 @@ const findAll = async ({
         },
       },
     ];
+  }
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (supplier) {
+    filter.supplier = supplier;
+  }
+
+  if (lowStock === true) {
+    filter.$expr = {
+      $lte: [
+        "$quantityInStock",
+        "$reorderLevel",
+      ],
+    };
+  }
+
+  if (expired === true) {
+    filter.expiryDate = {
+      $lt: new Date(),
+    };
+  }
+
+  if (
+    expiringWithin !== undefined
+  ) {
+    const now = new Date();
+
+    const futureDate = new Date();
+    futureDate.setDate(
+      futureDate.getDate() +
+        expiringWithin
+    );
+
+    filter.expiryDate = {
+      $gte: now,
+      $lte: futureDate,
+    };
   }
 
   const [products, total] =
@@ -94,6 +139,54 @@ const deleteById = async (id) => {
   return Product.findByIdAndDelete(id);
 };
 
+
+const getInventorySummary = async () => {
+  const now = new Date();
+
+  const futureDate = new Date();
+  futureDate.setDate(
+    futureDate.getDate() + 30
+  );
+
+  const [
+    totalProducts,
+    lowStockProducts,
+    expiredProducts,
+    expiringSoonProducts,
+  ] = await Promise.all([
+    Product.countDocuments(),
+
+    Product.countDocuments({
+      $expr: {
+        $lte: [
+          "$quantityInStock",
+          "$reorderLevel",
+        ],
+      },
+    }),
+
+    Product.countDocuments({
+      expiryDate: {
+        $lt: now,
+      },
+    }),
+
+    Product.countDocuments({
+      expiryDate: {
+        $gte: now,
+        $lte: futureDate,
+      },
+    }),
+  ]);
+
+  return {
+    totalProducts,
+    lowStockProducts,
+    expiredProducts,
+    expiringSoonProducts,
+  };
+};
+
 module.exports = {
   create,
   findAll,
@@ -101,6 +194,7 @@ module.exports = {
   findBySku,
   findByCategory,
   findBySupplier,
+  getInventorySummary,
   updateById,
   deleteById,
 };
