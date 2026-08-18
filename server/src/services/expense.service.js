@@ -215,10 +215,131 @@ const deleteExpense = async (
   );
 };
 
+const parseReportDates = ({
+  startDate,
+  endDate,
+}) => {
+  let parsedStartDate;
+  let parsedEndDate;
+
+  if (startDate) {
+    parsedStartDate =
+      new Date(startDate);
+
+    if (
+      Number.isNaN(
+        parsedStartDate.getTime()
+      )
+    ) {
+      throw new AppError(
+        "Invalid start date",
+        400
+      );
+    }
+
+    parsedStartDate.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+  }
+
+  if (endDate) {
+    parsedEndDate =
+      new Date(endDate);
+
+    if (
+      Number.isNaN(
+        parsedEndDate.getTime()
+      )
+    ) {
+      throw new AppError(
+        "Invalid end date",
+        400
+      );
+    }
+
+    parsedEndDate.setHours(
+      23,
+      59,
+      59,
+      999
+    );
+  }
+
+  if (
+    parsedStartDate &&
+    parsedEndDate &&
+    parsedStartDate > parsedEndDate
+  ) {
+    throw new AppError(
+      "Start date cannot be after end date",
+      400
+    );
+  }
+
+  return {
+    startDate: parsedStartDate,
+    endDate: parsedEndDate,
+  };
+};
+
+const getExpenseSummary = async ({
+  startDate,
+  endDate,
+}) => {
+  const dates =
+    parseReportDates({
+      startDate,
+      endDate,
+    });
+
+  return await expenseRepository.getExpenseSummary(
+    dates
+  );
+};
+
+const getExpensesByCategory = async ({
+  startDate,
+  endDate,
+}) => {
+  const dates =
+    parseReportDates({
+      startDate,
+      endDate,
+    });
+
+  return await expenseRepository.getExpensesByCategory(
+    dates
+  );
+};
+
+const getExpensesByDate = async ({
+  startDate,
+  endDate,
+}) => {
+  const dates =
+    parseReportDates({
+      startDate,
+      endDate,
+    });
+
+  return await expenseRepository.getExpensesByDate(
+    dates
+  );
+};
+
+
+
 module.exports = {
   createExpense,
   getExpenses,
   getExpenseById,
   updateExpense,
   deleteExpense,
+  getExpenseSummary,
+  getExpensesByCategory,
+  getExpensesByDate,
+  parseReportDates,
 };

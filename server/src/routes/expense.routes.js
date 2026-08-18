@@ -35,6 +35,27 @@ router.get(
   expenseController.getExpenses
 );
 
+router.get(
+  "/reports/summary",
+  authenticate,
+  authorize("admin"),
+  expenseController.getExpenseSummary
+);
+
+router.get(
+  "/reports/by-category",
+  authenticate,
+  authorize("admin"),
+  expenseController.getExpensesByCategory
+);
+
+router.get(
+  "/reports/by-date",
+  authenticate,
+  authorize("admin"),
+  expenseController.getExpensesByDate
+);
+
 router.put(
   "/:id",
   authenticate,
