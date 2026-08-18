@@ -87,6 +87,20 @@ const getInventorySummary =
     });
   });
 
+const searchProductsForPos =
+  asyncHandler(async (req, res) => {
+    const products =
+      await productService
+        .searchProductsForPos(
+          req.query.search
+        );
+
+    return res.status(200).json({
+      success: true,
+      data: products,
+    });
+  });
+
 module.exports = {
   createProduct,
   getProducts,
@@ -94,4 +108,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getInventorySummary,
+  searchProductsForPos,
 };

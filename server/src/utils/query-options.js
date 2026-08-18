@@ -6,7 +6,7 @@ const getQueryOptions = (query) => {
 
   const limit = Math.min(
     Math.max(
-      parseInt(query.limit, 10) || 10,
+      parseInt(query.limit, 10) || 20,
       1
     ),
     100

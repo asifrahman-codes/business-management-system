@@ -187,6 +187,73 @@ const getInventorySummary = async () => {
   };
 };
 
+const searchForPos = async (search) => {
+  const filter = {
+    quantityInStock: {
+      $gt: 0,
+    },
+  };
+
+  if (search) {
+    filter.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        sku: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  return Product.find(filter)
+    .select(
+      "_id name sku sellingPrice quantityInStock unit expiryDate"
+    )
+    .sort({
+      name: 1,
+    })
+    .limit(20)
+    .lean();
+};
+
+const findByIds = async (productIds) => {
+  return Product.find({
+    _id: {
+      $in: productIds,
+    },
+  });
+};
+
+const deductStock = async (
+  productId,
+  quantity,
+  session = null
+) => {
+  return Product.findOneAndUpdate(
+    {
+      _id: productId,
+      quantityInStock: {
+        $gte: quantity,
+      },
+    },
+    {
+      $inc: {
+        quantityInStock: -quantity,
+      },
+    },
+    {
+      new: true,
+      session,
+    }
+  );
+};
+
 module.exports = {
   create,
   findAll,
@@ -197,4 +264,7 @@ module.exports = {
   getInventorySummary,
   updateById,
   deleteById,
+  searchForPos,
+  findByIds,
+  deductStock,
 };

@@ -53,6 +53,13 @@ router.get(
 );
 
 router.get(
+  "/pos-search",
+  authenticate,
+  authorize("admin", "cashier"),
+  productController.searchProductsForPos
+);
+
+router.get(
   "/:id",
   authenticate,
   authorize("admin"),

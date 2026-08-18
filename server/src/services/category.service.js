@@ -1,23 +1,13 @@
-const categoryRepository =
-  require("../repositories/category.repository");
+const categoryRepository = require("../repositories/category.repository");
 
-const productRepository =
-  require("../repositories/product.repository");
-
-const AppError =
-  require("../utils/app-error");
+const productRepository = require("../repositories/product.repository");
+const AppError = require("../utils/app-error.util");
 
 const createCategory = async (data) => {
-  const existingCategory =
-    await categoryRepository.findByName(
-      data.name
-    );
+  const existingCategory = await categoryRepository.findByName(data.name);
 
   if (existingCategory) {
-    throw new AppError(
-      "Category already exists",
-      409
-    );
+    throw new AppError("Category already exists", 409);
   }
 
   return categoryRepository.create(data);
@@ -28,79 +18,47 @@ const getCategories = async () => {
 };
 
 const getCategoryById = async (id) => {
-  const category =
-    await categoryRepository.findById(id);
+  const category = await categoryRepository.findById(id);
 
   if (!category) {
-    throw new AppError(
-      "Category not found",
-      404
-    );
+    throw new AppError("Category not found", 404);
   }
 
   return category;
 };
 
-const updateCategory = async (
-  id,
-  data
-) => {
-  const category =
-    await categoryRepository.findById(id);
+const updateCategory = async (id, data) => {
+  const category = await categoryRepository.findById(id);
 
   if (!category) {
-    throw new AppError(
-      "Category not found",
-      404
-    );
+    throw new AppError("Category not found", 404);
   }
 
   if (data.name) {
-    const existingCategory =
-      await categoryRepository.findByName(
-        data.name
-      );
+    const existingCategory = await categoryRepository.findByName(data.name);
 
-    if (
-      existingCategory &&
-      existingCategory._id.toString() !== id
-    ) {
-      throw new AppError(
-        "Category already exists",
-        409
-      );
+    if (existingCategory && existingCategory._id.toString() !== id) {
+      throw new AppError("Category already exists", 409);
     }
   }
 
-  const updatedCategory =
-    await categoryRepository.updateById(
-      id,
-      data
-    );
-
-  return updatedCategory;
+  return categoryRepository.updateById(id, data);
 };
 
-const productsUsingCategory =
-  await productRepository.findByCategory(
-    id
-  );
-
-if (productsUsingCategory) {
-  throw new AppError(
-    "Cannot delete category because products are using it",
-    409
-  );
-}
-
 const deleteCategory = async (id) => {
-  const category =
-    await categoryRepository.findById(id);
+  const category = await categoryRepository.findById(id);
 
   if (!category) {
+    throw new AppError("Category not found", 404);
+  }
+
+  // PROTECT AGAINST DELETING CATEGORIES IN USE
+  const productsUsingCategory = await productRepository.findByCategory(id);
+
+  if (productsUsingCategory) {
     throw new AppError(
-      "Category not found",
-      404
+      "Cannot delete category because products are using it",
+      409
     );
   }
 
