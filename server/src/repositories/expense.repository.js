@@ -4,17 +4,30 @@ const createExpense = async (expenseData) => {
   return await Expense.create(expenseData);
 };
 
-const getExpenses = async () => {
-  return await Expense.find()
-    .populate(
-      "recordedBy",
-      "name email role"
-    )
-    .sort({
-      date: -1,
-      createdAt: -1,
-    })
-    .lean();
+const getExpenses = async ({
+  filter,
+  skip,
+  limit,
+  sort,
+}) => {
+  const [expenses, total] = await Promise.all([
+    Expense.find(filter)
+      .populate(
+        "recordedBy",
+        "name email role"
+      )
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+
+    Expense.countDocuments(filter),
+  ]);
+
+  return {
+    expenses,
+    total,
+  };
 };
 
 const getExpenseById = async (expenseId) => {
