@@ -12,6 +12,13 @@ const authorize = require(
   "../middleware/role.middleware"
 );
 
+const {
+  createExpenseSchema,
+  updateExpenseSchema,
+} = require(
+  "../validators/expense.validation"
+);
+
 const router = express.Router();
 
 router.post(
@@ -26,6 +33,20 @@ router.get(
   authenticate,
   authorize("admin"),
   expenseController.getExpenses
+);
+
+router.put(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  expenseController.updateExpense
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  expenseController.deleteExpense
 );
 
 router.get(

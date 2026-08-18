@@ -19,7 +19,6 @@ const createExpense = async ({
   return expense;
 };
 
-
 const getExpenses = async ({
   page = 1,
   limit = 10,
@@ -69,6 +68,28 @@ const getExpenses = async ({
   if (!allowedSortFields.includes(sortBy)) {
     throw new AppError(
       "Invalid sort field",
+      400
+    );
+  }
+
+  const allowedCategories = [
+    "RENT",
+    "UTILITIES",
+    "SALARY",
+    "SUPPLIES",
+    "MAINTENANCE",
+    "TRANSPORT",
+    "MARKETING",
+    "EQUIPMENT",
+    "OTHER",
+  ];
+
+  if (
+    category &&
+    !allowedCategories.includes(category)
+  ) {
+    throw new AppError(
+      "Invalid expense category",
       400
     );
   }
@@ -133,27 +154,6 @@ const getExpenses = async ({
     },
   };
 };
-const allowedCategories = [
-  "RENT",
-  "UTILITIES",
-  "SALARY",
-  "SUPPLIES",
-  "MAINTENANCE",
-  "TRANSPORT",
-  "MARKETING",
-  "EQUIPMENT",
-  "OTHER",
-];
-
-if (
-  category &&
-  !allowedCategories.includes(category)
-) {
-  throw new AppError(
-    "Invalid expense category",
-    400
-  );
-}
 
 const getExpenseById = async (
   expenseId
@@ -173,8 +173,52 @@ const getExpenseById = async (
   return expense;
 };
 
+const updateExpense = async (
+  expenseId,
+  expenseData
+) => {
+  const existingExpense =
+    await expenseRepository.getExpenseById(
+      expenseId
+    );
+
+  if (!existingExpense) {
+    throw new AppError(
+      "Expense not found",
+      404
+    );
+  }
+
+  return await expenseRepository.updateExpense(
+    expenseId,
+    expenseData
+  );
+};
+
+const deleteExpense = async (
+  expenseId
+) => {
+  const existingExpense =
+    await expenseRepository.getExpenseById(
+      expenseId
+    );
+
+  if (!existingExpense) {
+    throw new AppError(
+      "Expense not found",
+      404
+    );
+  }
+
+  await expenseRepository.deleteExpense(
+    expenseId
+  );
+};
+
 module.exports = {
   createExpense,
   getExpenses,
   getExpenseById,
+  updateExpense,
+  deleteExpense,
 };

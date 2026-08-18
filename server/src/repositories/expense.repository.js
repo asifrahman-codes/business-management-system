@@ -39,8 +39,29 @@ const getExpenseById = async (expenseId) => {
     .lean();
 };
 
+
+const updateExpense = async (
+  expenseId,
+  expenseData
+) => {
+  return await Expense.findByIdAndUpdate(
+    expenseId,
+    expenseData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate(
+      "recordedBy",
+      "name email role"
+    )
+    .lean();
+};
+
 module.exports = {
   createExpense,
   getExpenses,
   getExpenseById,
+  updateExpense,
 };
