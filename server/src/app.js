@@ -19,6 +19,10 @@ const inventoryTransactionRoutes =
     "./routes/inventory-transaction.routes"
   );
 
+const expenseRoutes = require(
+  "./routes/expense.routes"
+);
+
 app.use(cors());
 app.use(express.json());
 
@@ -53,6 +57,11 @@ app.use(
 app.use(
   "/api/inventory-transactions",
   inventoryTransactionRoutes
+);
+
+app.use(
+  "/api/expenses",
+  expenseRoutes
 );
 
 app.use((req, res, next) => {
