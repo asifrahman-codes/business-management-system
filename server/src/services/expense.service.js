@@ -2,6 +2,10 @@ const expenseRepository = require(
   "../repositories/expense.repository"
 );
 
+const {
+  isValidObjectId,
+} = require("../utils/validate-object-id");
+
 const AppError = require(
   "../utils/app-error.util"
 );
@@ -158,6 +162,13 @@ const getExpenses = async ({
 const getExpenseById = async (
   expenseId
 ) => {
+  if (!isValidObjectId(expenseId)) {
+    throw new AppError(
+      "Invalid expense ID",
+      400
+    );
+  }
+
   const expense =
     await expenseRepository.getExpenseById(
       expenseId
