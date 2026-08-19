@@ -293,32 +293,72 @@ const parseReportDates = ({
 const getExpenseSummary = async ({
   startDate,
   endDate,
+  category,
 }) => {
-  const dates =
-    parseReportDates({
-      startDate,
-      endDate,
-    });
+  const filter = {};
 
-  return await expenseRepository.getExpenseSummary(
-    dates
-  );
+  if (category) {
+    filter.category = category;
+  }
+
+  if (startDate || endDate) {
+    filter.date = {};
+
+    if (startDate) {
+      filter.date.$gte =
+        new Date(startDate);
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+
+      end.setHours(
+        23,
+        59,
+        59,
+        999
+      );
+
+      filter.date.$lte = end;
+    }
+  }
+
+  return await expenseRepository
+    .getExpenseSummary(filter);
 };
 
-const getExpensesByCategory = async ({
-  startDate,
-  endDate,
-}) => {
-  const dates =
-    parseReportDates({
-      startDate,
-      endDate,
-    });
+const getExpensesByCategory =
+  async ({
+    startDate,
+    endDate,
+  }) => {
+    const filter = {};
 
-  return await expenseRepository.getExpensesByCategory(
-    dates
-  );
-};
+    if (startDate || endDate) {
+      filter.date = {};
+
+      if (startDate) {
+        filter.date.$gte =
+          new Date(startDate);
+      }
+
+      if (endDate) {
+        const end = new Date(endDate);
+
+        end.setHours(
+          23,
+          59,
+          59,
+          999
+        );
+
+        filter.date.$lte = end;
+      }
+    }
+
+    return await expenseRepository
+      .getExpensesByCategory(filter);
+  };
 
 const getExpensesByDate = async ({
   startDate,
@@ -335,6 +375,41 @@ const getExpensesByDate = async ({
   );
 };
 
+const getMonthlyExpenses =
+  async ({
+    year,
+  }) => {
+    const filter = {};
+
+    if (year) {
+      const numericYear =
+        Number(year);
+
+      if (
+        !Number.isInteger(
+          numericYear
+        )
+      ) {
+        throw new AppError(
+          "Year must be a valid integer",
+          400
+        );
+      }
+
+      filter.date = {
+        $gte: new Date(
+          `${numericYear}-01-01`
+        ),
+
+        $lt: new Date(
+          `${numericYear + 1}-01-01`
+        ),
+      };
+    }
+
+    return await expenseRepository
+      .getMonthlyExpenses(filter);
+  };
 
 module.exports = {
   createExpense,
@@ -346,4 +421,5 @@ module.exports = {
   getExpensesByCategory,
   getExpensesByDate,
   parseReportDates,
+  getMonthlyExpenses,
 };

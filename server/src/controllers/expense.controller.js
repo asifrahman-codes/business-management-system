@@ -108,45 +108,47 @@ const deleteExpense = asyncHandler(
 );
 
 
-const getExpenseSummary = asyncHandler(
-  async (req, res) => {
+const getExpenseSummary =
+  asyncHandler(async (req, res) => {
     const {
       startDate,
       endDate,
+      category,
     } = req.query;
 
     const summary =
-      await expenseService.getExpenseSummary({
-        startDate,
-        endDate,
-      });
+      await expenseService
+        .getExpenseSummary({
+          startDate,
+          endDate,
+          category,
+        });
 
     return res.status(200).json({
       success: true,
       data: summary,
     });
-  }
-);
+  });
 
-const getExpensesByCategory = asyncHandler(
-  async (req, res) => {
+const getExpensesByCategory =
+  asyncHandler(async (req, res) => {
     const {
       startDate,
       endDate,
     } = req.query;
 
     const result =
-      await expenseService.getExpensesByCategory({
-        startDate,
-        endDate,
-      });
+      await expenseService
+        .getExpensesByCategory({
+          startDate,
+          endDate,
+        });
 
     return res.status(200).json({
       success: true,
       data: result,
     });
-  }
-);
+  });
 
 const getExpensesByDate = asyncHandler(
   async (req, res) => {
@@ -168,6 +170,24 @@ const getExpensesByDate = asyncHandler(
   }
 );
 
+const getMonthlyExpenses =
+  asyncHandler(async (req, res) => {
+    const {
+      year,
+    } = req.query;
+
+    const result =
+      await expenseService
+        .getMonthlyExpenses({
+          year,
+        });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  });
+
 module.exports = {
   createExpense,
   getExpenses,
@@ -177,4 +197,5 @@ module.exports = {
   getExpenseSummary,
   getExpensesByCategory,
   getExpensesByDate,
+  getMonthlyExpenses,
 };

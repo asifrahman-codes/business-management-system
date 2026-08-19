@@ -59,6 +59,14 @@ router.get(
   expenseController.getExpensesByDate
 );
 
+router.get(
+  "/reports/monthly",
+  authenticate,
+  authorize("admin"),
+  expenseController
+    .getMonthlyExpenses
+);
+
 router.put(
   "/:id",
   authenticate,

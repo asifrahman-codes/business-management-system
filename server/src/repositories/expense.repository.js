@@ -59,78 +59,65 @@ const updateExpense = async (
     .lean();
 };
 
-const getExpenseSummary = async ({
-  startDate,
-  endDate,
-}) => {
-  const match = {};
-
-  if (startDate || endDate) {
-    match.date = {};
-
-    if (startDate) {
-      match.date.$gte = startDate;
-    }
-
-    if (endDate) {
-      match.date.$lte = endDate;
-    }
-  }
-
+const getExpenseSummary = async (
+  filter
+) => {
   const result = await Expense.aggregate([
     {
-      $match: match,
+      $match: filter,
     },
     {
       $group: {
         _id: null,
+
         totalAmount: {
           $sum: "$amount",
         },
-        totalExpenses: {
+
+        expenseCount: {
           $sum: 1,
+        },
+
+        averageAmount: {
+          $avg: "$amount",
+        },
+
+        highestAmount: {
+          $max: "$amount",
+        },
+
+        lowestAmount: {
+          $min: "$amount",
         },
       },
     },
   ]);
 
-  return (
-    result[0] || {
-      totalAmount: 0,
-      totalExpenses: 0,
-    }
-  );
+  return result[0] || {
+    totalAmount: 0,
+    expenseCount: 0,
+    averageAmount: 0,
+    highestAmount: 0,
+    lowestAmount: 0,
+  };
 };
 
-const getExpensesByCategory = async ({
-  startDate,
-  endDate,
-}) => {
-  const match = {};
-
-  if (startDate || endDate) {
-    match.date = {};
-
-    if (startDate) {
-      match.date.$gte = startDate;
-    }
-
-    if (endDate) {
-      match.date.$lte = endDate;
-    }
-  }
-
+const getExpensesByCategory = async (
+  filter
+) => {
   return await Expense.aggregate([
     {
-      $match: match,
+      $match: filter,
     },
     {
       $group: {
         _id: "$category",
+
         totalAmount: {
           $sum: "$amount",
         },
-        totalExpenses: {
+
+        expenseCount: {
           $sum: 1,
         },
       },
@@ -195,6 +182,44 @@ const deleteExpense = async (expenseId) => {
   );
 };
 
+
+const getMonthlyExpenses = async (
+  filter
+) => {
+  return await Expense.aggregate([
+    {
+      $match: filter,
+    },
+    {
+      $group: {
+        _id: {
+          year: {
+            $year: "$date",
+          },
+
+          month: {
+            $month: "$date",
+          },
+        },
+
+        totalAmount: {
+          $sum: "$amount",
+        },
+
+        expenseCount: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        "_id.year": 1,
+        "_id.month": 1,
+      },
+    },
+  ]);
+};
+
 module.exports = {
   createExpense,
   getExpenses,
@@ -204,4 +229,5 @@ module.exports = {
   getExpensesByCategory,
   getExpensesByDate,
   deleteExpense,
+  getMonthlyExpenses,
 };
