@@ -1,5 +1,17 @@
 const Joi = require("joi");
 
+const expenseCategories = [
+  "RENT",
+  "UTILITIES",
+  "SALARY",
+  "SUPPLIES",
+  "MAINTENANCE",
+  "TRANSPORT",
+  "MARKETING",
+  "EQUIPMENT",
+  "OTHER",
+];
+
 const createExpenseSchema = Joi.object({
   title: Joi.string()
     .trim()
@@ -7,17 +19,7 @@ const createExpenseSchema = Joi.object({
     .required(),
 
   category: Joi.string()
-    .valid(
-      "RENT",
-      "UTILITIES",
-      "SALARY",
-      "SUPPLIES",
-      "MAINTENANCE",
-      "TRANSPORT",
-      "MARKETING",
-      "EQUIPMENT",
-      "OTHER"
-    )
+    .valid(...expenseCategories)
     .required(),
 
   amount: Joi.number()
@@ -41,17 +43,7 @@ const updateExpenseSchema = Joi.object({
     .optional(),
 
   category: Joi.string()
-    .valid(
-      "RENT",
-      "UTILITIES",
-      "SALARY",
-      "SUPPLIES",
-      "MAINTENANCE",
-      "TRANSPORT",
-      "MARKETING",
-      "EQUIPMENT",
-      "OTHER"
-    )
+    .valid(...expenseCategories)
     .optional(),
 
   amount: Joi.number()
@@ -66,10 +58,10 @@ const updateExpenseSchema = Joi.object({
     .max(500)
     .allow("")
     .optional(),
-})
-  .min(1);
+}).min(1);
 
 module.exports = {
   createExpenseSchema,
   updateExpenseSchema,
+  expenseCategories,
 };

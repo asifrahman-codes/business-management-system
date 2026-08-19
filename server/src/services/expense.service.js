@@ -175,7 +175,7 @@ const getExpenseById = async (
 
 const updateExpense = async (
   expenseId,
-  expenseData
+  updateData
 ) => {
   const existingExpense =
     await expenseRepository.getExpenseById(
@@ -189,10 +189,13 @@ const updateExpense = async (
     );
   }
 
-  return await expenseRepository.updateExpense(
-    expenseId,
-    expenseData
-  );
+  const updatedExpense =
+    await expenseRepository.updateExpense(
+      expenseId,
+      updateData
+    );
+
+  return updatedExpense;
 };
 
 const deleteExpense = async (
@@ -213,6 +216,8 @@ const deleteExpense = async (
   await expenseRepository.deleteExpense(
     expenseId
   );
+
+  return existingExpense;
 };
 
 const parseReportDates = ({
@@ -329,7 +334,6 @@ const getExpensesByDate = async ({
     dates
   );
 };
-
 
 
 module.exports = {

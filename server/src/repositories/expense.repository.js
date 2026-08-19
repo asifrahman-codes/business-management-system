@@ -189,6 +189,12 @@ const getExpensesByDate = async ({
   ]);
 };
 
+const deleteExpense = async (expenseId) => {
+  return await Expense.findByIdAndDelete(
+    expenseId
+  );
+};
+
 module.exports = {
   createExpense,
   getExpenses,
@@ -197,4 +203,5 @@ module.exports = {
   getExpenseSummary,
   getExpensesByCategory,
   getExpensesByDate,
+  deleteExpense,
 };

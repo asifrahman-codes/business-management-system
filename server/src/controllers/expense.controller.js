@@ -99,7 +99,11 @@ const deleteExpense = asyncHandler(
       req.params.id
     );
 
-    return res.status(204).send();
+    return res.status(200).json({
+      success: true,
+      message:
+        "Expense deleted successfully",
+    });
   }
 );
 

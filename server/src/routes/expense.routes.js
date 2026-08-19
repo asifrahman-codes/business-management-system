@@ -12,6 +12,8 @@ const authorize = require(
   "../middleware/role.middleware"
 );
 
+const validate = require("../middleware/validate.middleware");
+
 const {
   createExpenseSchema,
   updateExpenseSchema,
@@ -25,6 +27,7 @@ router.post(
   "/",
   authenticate,
   authorize("admin"),
+  validate(createExpenseSchema),
   expenseController.createExpense
 );
 
@@ -60,6 +63,7 @@ router.put(
   "/:id",
   authenticate,
   authorize("admin"),
+  validate(updateExpenseSchema),
   expenseController.updateExpense
 );
 
