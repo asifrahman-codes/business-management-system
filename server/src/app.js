@@ -27,6 +27,11 @@ const employeeRoutes = require(
   "./routes/employee.routes"
 );
 
+const salaryPaymentRoutes =
+  require(
+    "./routes/salary-payment.routes"
+  );
+
 app.use(cors());
 app.use(express.json());
 
@@ -71,6 +76,11 @@ app.use(
 app.use(
   "/api/employees",
   employeeRoutes
+);
+
+app.use(
+  "/api/salary-payments",
+  salaryPaymentRoutes
 );
 
 app.use((req, res, next) => {
