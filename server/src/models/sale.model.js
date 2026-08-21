@@ -33,6 +33,12 @@ const saleItemSchema = new mongoose.Schema(
       min: 0,
     },
 
+    costPrice: {
+  type: Number,
+  required: true,
+  min: 0,
+},
+
     subtotal: {
       type: Number,
       required: true,

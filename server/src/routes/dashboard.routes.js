@@ -1,0 +1,28 @@
+const express = require("express");
+
+const dashboardController =
+  require(
+    "../controllers/dashboard.controller"
+  );
+
+const {
+  authenticate,
+} = require(
+  "../middleware/auth.middleware"
+);
+
+const authorize = require(
+  "../middleware/role.middleware"
+);
+
+const router = express.Router();
+
+router.get(
+  "/summary",
+  authenticate,
+  authorize("admin"),
+  dashboardController
+    .getDashboardSummary
+);
+
+module.exports = router;
