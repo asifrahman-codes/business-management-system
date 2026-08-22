@@ -1,3 +1,5 @@
+const Sale = require("../models/sale.model");
+
 const create = async (
   saleData,
   session = null
@@ -40,7 +42,14 @@ const findMany = async ({
   };
 };
 
+const findById = async (id) => {
+  return Sale.findOne({ _id: id })
+    .populate("cashier", "name email role")
+    .lean();
+};
+
 module.exports = {
   create,
   findMany,
+  findById,
 };

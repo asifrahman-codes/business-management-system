@@ -1,55 +1,26 @@
 const express = require("express");
 
-const reportController =
-  require(
-    "../controllers/report.controller"
-  );
-
-const {
-  authenticate,
-} = require(
-  "../middleware/auth.middleware"
-);
-
-const authorize = require(
-  "../middleware/role.middleware"
-);
+const saleController = require("../controllers/sale.controller");
+const { authenticate } = require("../middleware/auth.middleware");
+const authorize = require("../middleware/role.middleware");
+const validate = require("../middleware/validate.middleware");
+const validateObjectId = require("../middleware/object-id.middleware");
+const { createSaleSchema } = require("../validators/sale.validation");
 
 const router = express.Router();
 
-router.get(
-  "/sales",
+router.post(
+  "/",
   authenticate,
-  authorize("admin"),
-  reportController.getSalesReport
+  authorize("admin", "cashier"),
+  validate(createSaleSchema),
+  saleController.createSale
 );
 
-router.get(
-  "/expenses",
-  authenticate,
-  authorize("admin"),
-  reportController.getExpenseReport
-);
+router.get("/", authenticate, authorize("admin", "cashier"), saleController.getSales);
 
-router.get(
-  "/profit",
-  authenticate,
-  authorize("admin"),
-  reportController.getProfitReport
-);
+router.get("/:id", authenticate, authorize("admin", "cashier"), validateObjectId(), saleController.getSaleById);
 
-router.get(
-  "/monthly",
-  authenticate,
-  authorize("admin"),
-  reportController.getMonthlyReport
-);
-
-router.get(
-  "/inventory",
-  authenticate,
-  authorize("admin"),
-  reportController.getInventoryReport
-);
+router.get("/:id/receipt", authenticate, authorize("admin", "cashier"), validateObjectId(), saleController.getSaleReceipt);
 
 module.exports = router;

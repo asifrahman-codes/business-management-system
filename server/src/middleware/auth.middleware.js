@@ -70,7 +70,7 @@ const authenticate = async (req, res, next) => {
         401
       );
     }
-
+    
     req.user = user;
 
     next();

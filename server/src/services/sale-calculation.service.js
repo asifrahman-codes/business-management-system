@@ -1,3 +1,8 @@
+const mongoose = require("mongoose");
+
+const AppError =
+  require("../utils/app-error.util");
+
 const roundMoney = (value) =>
   Math.round(
     (value + Number.EPSILON) * 100
@@ -54,24 +59,28 @@ const calculateSaleTotals = ({
   });
 
   const saleItems = items.map(
-    ({ product, quantity }) => {
-      const unitPrice =
-        product.sellingPrice;
+  ({ product, quantity }) => {
+    const unitPrice =
+      product.sellingPrice;
 
-      const subtotal = roundMoney(
-        unitPrice * quantity
-      );
+    const costPrice =
+      product.costPrice;
 
-      return {
-        product: product._id,
-        name: product.name,
-        sku: product.sku,
-        quantity,
-        unitPrice,
-        subtotal,
-      };
-    }
-  );
+    const subtotal = roundMoney(
+      unitPrice * quantity
+    );
+
+    return {
+      product: product._id,
+      name: product.name,
+      sku: product.sku,
+      quantity,
+      unitPrice,
+      costPrice,
+      subtotal,
+    };
+  }
+);
 
   const totalAmount = roundMoney(
     saleItems.reduce(

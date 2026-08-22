@@ -1,24 +1,13 @@
-const dashboardService =
-  require(
-    "../services/dashboard.service"
-  );
+const dashboardService = require("../services/dashboard.service");
+const asyncHandler = require("../utils/async-handler.util");
 
-const asyncHandler = require(
-  "../utils/async-handler.util"
-);
-
-const getDashboardSummary =
-  asyncHandler(async (req, res) => {
-    const summary =
-      await dashboardService
-        .getDashboardSummary();
-
-    return res.status(200).json({
-      success: true,
-      data: summary,
-    });
+const getDashboardSummary = asyncHandler(async (req, res) => {
+  const stats = await dashboardService.getDashboardSummary();
+  
+  return res.status(200).json({
+    success: true,
+    data: stats,
   });
+});
 
-module.exports = {
-  getDashboardSummary,
-};
+module.exports = { getDashboardSummary };

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const authRoutes = require("./routes/auth.Routes");
+const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const errorMiddleware = require("./middleware/error.middleware");
 const AppError = require("./utils/app-error.util");
@@ -40,6 +40,16 @@ const dashboardRoutes =
 const reportRoutes =
   require(
     "./routes/report.routes"
+  );
+
+const saleRoutes =
+  require(
+    "./routes/sale.routes"
+  );
+
+const settingsRoutes =
+  require(
+    "./routes/settings.routes"
   );
 
 
@@ -102,6 +112,16 @@ app.use(
 app.use(
   "/api/reports",
   reportRoutes
+);
+
+app.use(
+  "/api/sales",
+  saleRoutes
+);
+
+app.use(
+  "/api/settings",
+  settingsRoutes
 );
 
 app.use((req, res, next) => {

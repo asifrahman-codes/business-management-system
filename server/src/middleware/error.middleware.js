@@ -4,6 +4,10 @@ const errorMiddleware = (
   res,
   next
 ) => {
+
+  console.error("ERROR:", error);
+console.error("STACK:", error.stack);
+
   const statusCode =
     error.statusCode || 500;
 

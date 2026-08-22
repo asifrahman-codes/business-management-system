@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+const AppError = require("../utils/app-error.util");
+
+const getQueryOptions = require("../utils/query-options");
+
 const productRepository =
   require("../repositories/product.repository");
 
@@ -61,6 +65,7 @@ const createSale = async ({
   try {
     session.startTransaction();
 
+    const stockMovements =
     await deductSaleStock({
       items: validatedItems,
       session,

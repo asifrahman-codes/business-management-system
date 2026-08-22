@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+const AppError =
+  require("../utils/app-error.util");
+
 const validateCheckoutItems = async ({
   items,
   productRepository,

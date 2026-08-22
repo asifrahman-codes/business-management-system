@@ -29,14 +29,6 @@ router.get(
   productController.getProducts
 );
 
-router.get(
-  "/:id",
-  authenticate,
-  authorize("admin"),
-  validateObjectId(),
-  productController.getProductById
-);
-
 router.post(
   "/",
   authenticate,
@@ -57,6 +49,14 @@ router.get(
   authenticate,
   authorize("admin", "cashier"),
   productController.searchProductsForPos
+);
+
+router.get(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  validateObjectId(),
+  productController.getProductById
 );
 
 router.get(

@@ -4,6 +4,9 @@ const saleService =
 const receiptService =
   require("../services/receipt.service");
 
+const asyncHandler =
+  require("../utils/async-handler.util");
+
 const createSale =
   asyncHandler(async (req, res) => {
     const sale =
@@ -66,3 +69,10 @@ const getSaleReceipt =
       data: receipt,
     });
   });
+
+module.exports = {
+  createSale,
+  getSales,
+  getSaleById,
+  getSaleReceipt,
+};
