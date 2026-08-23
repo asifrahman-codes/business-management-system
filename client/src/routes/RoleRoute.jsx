@@ -1,19 +1,22 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import useAuth from "../hooks/use-auth";
+import useAuth from "../hooks/useAuth";
+import { USER_ROLES } from "../config/constants";
 
-const RoleRoute = ({ allowedRoles }) => {
+function RoleRoute({ allowedRoles }) {
   const { user } = useAuth();
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  const userRole = user?.role?.toUpperCase();
 
-  if (!allowedRoles.includes(user.role)) {
+  const normalizedRoles = allowedRoles.map((role) =>
+    role.toUpperCase()
+  );
+
+  if (!user || !normalizedRoles.includes(userRole)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
   return <Outlet />;
-};
+}
 
 export default RoleRoute;
