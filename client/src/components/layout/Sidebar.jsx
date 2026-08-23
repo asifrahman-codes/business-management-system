@@ -61,7 +61,7 @@ const navigation = [
 function Sidebar({ isOpen, onClose }) {
   const { user } = useAuth();
 
-  const userRole = user?.role?.toUpperCase();
+  const userRole = user?.role;
 
   const visibleNavigation = navigation.filter((item) =>
     item.roles.includes(userRole)
