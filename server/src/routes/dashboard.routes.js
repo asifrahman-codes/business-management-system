@@ -18,7 +18,7 @@ const authorize = require(
 const router = express.Router();
 
 router.get(
-  "/summary",
+  "/",
   authenticate,
   authorize("admin"),
   dashboardController

@@ -10,6 +10,8 @@ import DashboardPage from "../pages/dashboard/DashboardPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
 
+import AppLayout from "../components/layout/AppLayout";
+
 import ProtectedRoute from "./ProtectedRoute";
 import RoleRoute from "./RoleRoute";
 
@@ -35,30 +37,36 @@ function AppRoutes() {
         />
 
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/dashboard"
-            element={<DashboardPage />}
-          />
+  <Route element={<AppLayout />}>
+    <Route
+      path="/dashboard"
+      element={<DashboardPage />}
+    />
 
-          {/* Admin-only routes will be added here later */}
-          <Route element={<RoleRoute allowedRoles={[USER_ROLES.ADMIN]} />}>
-            {/* Future admin pages */}
-          </Route>
+    <Route
+      element={
+        <RoleRoute
+          allowedRoles={[USER_ROLES.ADMIN]}
+        />
+      }
+    >
+      {/* Admin routes */}
+    </Route>
 
-          {/* Admin + Cashier routes will be added here later */}
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={[
-                  USER_ROLES.ADMIN,
-                  USER_ROLES.CASHIER,
-                ]}
-              />
-            }
-          >
-            {/* Future shared routes */}
-          </Route>
-        </Route>
+    <Route
+      element={
+        <RoleRoute
+          allowedRoles={[
+            USER_ROLES.ADMIN,
+            USER_ROLES.CASHIER,
+          ]}
+        />
+      }
+    >
+      {/* Admin + Cashier routes */}
+    </Route>
+  </Route>
+</Route>
 
         <Route
           path="*"
