@@ -17,6 +17,7 @@ const create = async (
 
   return transaction;
 };
+
 const findMany = async ({
   filters = {},
   skip = 0,
@@ -26,7 +27,9 @@ const findMany = async ({
     transactions,
     total,
   ] = await Promise.all([
-    InventoryTransaction.find(filters)
+    InventoryTransaction.find(
+      filters
+    )
       .populate(
         "product",
         "name sku unit"
@@ -66,7 +69,9 @@ const findByProduct = async ({
     transactions,
     total,
   ] = await Promise.all([
-    InventoryTransaction.find(filters)
+    InventoryTransaction.find(
+      filters
+    )
       .populate(
         "product",
         "name sku unit"
@@ -93,59 +98,8 @@ const findByProduct = async ({
   };
 };
 
-const getInventoryTransactions =
-  async (query) => {
-    const {
-      page,
-      limit,
-      skip,
-    } = getQueryOptions(query);
-
-    const filters = {};
-
-    if (query.product) {
-      filters.product =
-        query.product;
-    }
-
-    if (query.type) {
-      filters.type =
-        query.type;
-    }
-
-    if (query.performedBy) {
-      filters.performedBy =
-        query.performedBy;
-    }
-
-    const {
-      transactions,
-      total,
-    } =
-      await inventoryTransactionRepository
-        .findMany({
-          filters,
-          skip,
-          limit,
-        });
-
-    return {
-      transactions,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(
-          total / limit
-        ),
-      },
-    };
-  };
-
 module.exports = {
   create,
   findMany,
   findByProduct,
-  getInventoryTransactions,
 };
-

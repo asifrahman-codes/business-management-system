@@ -1,5 +1,12 @@
+const inventoryTransactionService =
+  require(
+    "../services/inventory-transaction.service"
+  );
+
 const asyncHandler =
-  require("../utils/async-handler.util");
+  require(
+    "../utils/async-handler.util"
+  );
 
 const getInventoryTransactions =
   asyncHandler(async (req, res) => {
@@ -15,7 +22,6 @@ const getInventoryTransactions =
     });
   });
 
-  module.exports = {
-    getInventoryTransactions
-
+module.exports = {
+  getInventoryTransactions,
 };

@@ -8,6 +8,7 @@ import {
   Users,
   Wallet,
   X,
+  History,
 } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
@@ -38,6 +39,12 @@ const navigation = [
     icon: ClipboardList,
     roles: [USER_ROLES.ADMIN],
   },
+  {
+  label: "Inventory Transactions",
+  path: "/inventory/transactions",
+  icon: History,
+  roles: [USER_ROLES.ADMIN],
+},
   {
     label: "Employees",
     path: "/employees",

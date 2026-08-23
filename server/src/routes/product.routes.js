@@ -59,14 +59,6 @@ router.get(
   productController.getProductById
 );
 
-router.get(
-  "/:id",
-  authenticate,
-  authorize("admin"),
-  validateObjectId(),
-  productController.getProductById
-);
-
 router.patch(
   "/:id",
   authenticate,
