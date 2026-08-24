@@ -30,6 +30,10 @@ import SupplierFormPage from "../pages/suppliers/SupplierFormPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
 import InventoryTransactionsPage from "../pages/inventory/InventoryTransactionsPage";
 
+import PosPage from "../pages/pos/PosPage";
+import SalesPage from "../pages/sales/SalesPage";
+import SaleDetailsPage from "../pages/sales/SaleDetailsPage";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -173,6 +177,21 @@ function AppRoutes() {
       }
     >
       {/* Admin + Cashier routes */}
+
+      <Route
+  path="/pos"
+  element={<PosPage />}
+/>
+
+<Route
+  path="/sales"
+  element={<SalesPage />}
+/>
+
+<Route
+  path="/sales/:id"
+  element={<SaleDetailsPage />}
+/>
     </Route>
   </Route>
 </Route>
