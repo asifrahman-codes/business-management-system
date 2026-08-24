@@ -52,11 +52,17 @@ const navigation = [
     roles: [USER_ROLES.ADMIN],
   },
   {
-    label: "Finance",
-    path: "/finance",
-    icon: Wallet,
-    roles: [USER_ROLES.ADMIN],
-  },
+  label: "Salary Payments",
+  path: "/salary-payments",
+  icon: Wallet,
+  roles: [USER_ROLES.ADMIN],
+},
+  // {
+  //   label: "Finance",
+  //   path: "/finance",
+  //   icon: Wallet,
+  //   roles: [USER_ROLES.ADMIN],
+  // },
   {
     label: "Reports",
     path: "/reports",

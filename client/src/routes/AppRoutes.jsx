@@ -31,18 +31,32 @@ import InventoryPage from "../pages/inventory/InventoryPage";
 import InventoryTransactionsPage from "../pages/inventory/InventoryTransactionsPage";
 
 import PosPage from "../pages/pos/PosPage";
+
 import SalesPage from "../pages/sales/SalesPage";
 import SaleDetailsPage from "../pages/sales/SaleDetailsPage";
 
 import EmployeesPage from "../pages/employees/EmployeesPage";
 
+import SalaryPaymentsPage from "../pages/salary/SalaryPaymentsPage";
+
+import ReportsPage from "../pages/reports/ReportsPage";
+
+import FinancePage from "../pages/finance/FinancePage";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
+
         <Route
           path="/"
-          element={<Navigate to="/dashboard" replace />}
+          element={
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          }
         />
 
         <Route
@@ -55,152 +69,166 @@ function AppRoutes() {
           element={<UnauthorizedPage />}
         />
 
+        {/* Protected routes */}
+
         <Route element={<ProtectedRoute />}>
-  <Route element={<AppLayout />}>
-    <Route
-      path="/dashboard"
-      element={<DashboardPage />}
-    />
+          <Route element={<AppLayout />}>
 
-    <Route
-      element={
-        <RoleRoute
-          allowedRoles={[USER_ROLES.ADMIN]}
-        />
-      }
-    >
-      {/* Admin routes */}
-<Route
-  element={
-    <RoleRoute
-      allowedRoles={[USER_ROLES.ADMIN]}
-    />
-  }
->
-  <Route
-    path="/products"
-    element={<ProductsPage />}
-  />
+            {/* Dashboard */}
 
-  <Route
-    path="/products/new"
-    element={<ProductFormPage />}
-  />
+            <Route
+              path="/dashboard"
+              element={<DashboardPage />}
+            />
 
-  <Route
-    path="/products/:id"
-    element={<ProductDetailsPage />}
-  />
+            {/* Admin routes */}
 
-  <Route
-    path="/products/:id/edit"
-    element={<ProductFormPage />}
-  />
-</Route>
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    USER_ROLES.ADMIN,
+                  ]}
+                />
+              }
+            >
+              {/* Products */}
 
-<Route
-  element={
-    <RoleRoute
-      allowedRoles={[USER_ROLES.ADMIN]}
-    />
-  }
->
-  {/* Products */}
-  <Route
-    path="/products"
-    element={<ProductsPage />}
-  />
+              <Route
+                path="/products"
+                element={<ProductsPage />}
+              />
 
-  <Route
-    path="/products/new"
-    element={<ProductFormPage />}
-  />
+              <Route
+                path="/products/new"
+                element={<ProductFormPage />}
+              />
 
-  <Route
-    path="/products/:id"
-    element={<ProductDetailsPage />}
-  />
+              <Route
+                path="/products/:id"
+                element={<ProductDetailsPage />}
+              />
 
-  <Route
-    path="/products/:id/edit"
-    element={<ProductFormPage />}
-  />
+              <Route
+                path="/products/:id/edit"
+                element={<ProductFormPage />}
+              />
 
-  {/* Categories */}
-  <Route
-    path="/categories"
-    element={<CategoriesPage />}
-  />
+              {/* Categories */}
 
-  <Route
-    path="/categories/new"
-    element={<CategoryFormPage />}
-  />
+              <Route
+                path="/categories"
+                element={<CategoriesPage />}
+              />
 
-  <Route
-    path="/categories/:id/edit"
-    element={<CategoryFormPage />}
-  />
+              <Route
+                path="/categories/new"
+                element={<CategoryFormPage />}
+              />
 
-  {/* Suppliers */}
-  <Route
-    path="/suppliers"
-    element={<SuppliersPage />}
-  />
+              <Route
+                path="/categories/:id/edit"
+                element={<CategoryFormPage />}
+              />
 
-  <Route
-    path="/suppliers/new"
-    element={<SupplierFormPage />}
-  />
+              {/* Suppliers */}
 
-  <Route
-    path="/suppliers/:id/edit"
-    element={<SupplierFormPage />}
-  />
-</Route>
-<Route
-  path="/inventory"
-  element={<InventoryPage />}
-/>
-<Route
-  path="/inventory/transactions"
-  element={<InventoryTransactionsPage />}
-/>
-<Route
-  path="/employees"
-  element={<EmployeesPage />}
-/>
-    </Route>
+              <Route
+                path="/suppliers"
+                element={<SuppliersPage />}
+              />
 
-    <Route
-      element={
-        <RoleRoute
-          allowedRoles={[
-            USER_ROLES.ADMIN,
-            USER_ROLES.CASHIER,
-          ]}
-        />
-      }
-    >
-      {/* Admin + Cashier routes */}
+              <Route
+                path="/suppliers/new"
+                element={<SupplierFormPage />}
+              />
 
-      <Route
-  path="/pos"
-  element={<PosPage />}
-/>
+              <Route
+                path="/suppliers/:id/edit"
+                element={<SupplierFormPage />}
+              />
 
-<Route
-  path="/sales"
-  element={<SalesPage />}
-/>
+              {/* Inventory */}
 
-<Route
-  path="/sales/:id"
-  element={<SaleDetailsPage />}
-/>
-    </Route>
-  </Route>
-</Route>
+              <Route
+                path="/inventory"
+                element={<InventoryPage />}
+              />
+
+              <Route
+                path="/inventory/transactions"
+                element={
+                  <InventoryTransactionsPage />
+                }
+              />
+
+              {/* Employees */}
+
+              <Route
+                path="/employees"
+                element={<EmployeesPage />}
+              />
+
+              {/* Salary Payments */}
+
+              <Route
+                path="/salary-payments"
+                element={
+                  <SalaryPaymentsPage />
+                }
+              />
+
+              <Route
+              path="/reports"
+              element={<ReportsPage />}
+              />
+
+              <Route
+              path="/finance"
+              element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <FinancePage />
+                </ProtectedRoute>
+              }
+              />
+
+            </Route>
+
+            {/* Admin + Cashier routes */}
+
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    USER_ROLES.ADMIN,
+                    USER_ROLES.CASHIER,
+                  ]}
+                />
+              }
+            >
+              {/* POS */}
+
+              <Route
+                path="/pos"
+                element={<PosPage />}
+              />
+
+              {/* Sales */}
+
+              <Route
+                path="/sales"
+                element={<SalesPage />}
+              />
+
+              <Route
+                path="/sales/:id"
+                element={<SaleDetailsPage />}
+              />
+            </Route>
+          </Route>
+        </Route>
+
+        {/* 404 */}
 
         <Route
           path="*"
