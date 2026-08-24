@@ -1,6 +1,6 @@
 import api from "../api/axios";
 
-export const searchProductsForPos = async (
+const searchProductsForPos = async (
   search = ""
 ) => {
   const response = await api.get(
@@ -15,7 +15,7 @@ export const searchProductsForPos = async (
   return response.data;
 };
 
-export const createSale = async (saleData) => {
+const createSale = async (saleData) => {
   const response = await api.post(
     "/sales",
     saleData
@@ -24,7 +24,7 @@ export const createSale = async (saleData) => {
   return response.data;
 };
 
-export const getSales = async (params = {}) => {
+const getSales = async (params = {}) => {
   const response = await api.get(
     "/sales",
     {
@@ -35,7 +35,7 @@ export const getSales = async (params = {}) => {
   return response.data;
 };
 
-export const getSaleById = async (saleId) => {
+const getSaleById = async (saleId) => {
   const response = await api.get(
     `/sales/${saleId}`
   );
@@ -43,7 +43,7 @@ export const getSaleById = async (saleId) => {
   return response.data;
 };
 
-export const getSaleReceipt = async (
+const getSaleReceipt = async (
   saleId
 ) => {
   const response = await api.get(
@@ -51,4 +51,12 @@ export const getSaleReceipt = async (
   );
 
   return response.data;
+};
+
+export default {
+  searchProductsForPos,
+  createSale,
+  getSales,
+  getSaleById,
+  getSaleReceipt,
 };

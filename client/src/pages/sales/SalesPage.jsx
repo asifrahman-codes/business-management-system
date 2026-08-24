@@ -1,41 +1,48 @@
 import {
+  ReceiptText,
+  AlertCircle,
+  X,
+} from "lucide-react";
+
+import {
   useEffect,
   useState,
 } from "react";
 
 import {
-  Search,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+  useNavigate,
+} from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
+import saleService from "../../services/sale.service";
 
-import { getSales } from "../../services/sale.service";
+import SalesFilters from "../../components/sales/SalesFilters";
+import SalesTable from "../../components/sales/SalesTable";
 
-function SalesPage() {
+const SalesPage = () => {
   const navigate = useNavigate();
 
   const [sales, setSales] =
     useState([]);
 
   const [pagination, setPagination] =
-    useState(null);
+    useState({
+      page: 1,
+      limit: 10,
+      total: 0,
+      totalPages: 1,
+    });
+
+  const [filters, setFilters] =
+    useState({
+      startDate: "",
+      endDate: "",
+      paymentMethod: "",
+    });
 
   const [loading, setLoading] =
-    useState(true);
+    useState(false);
 
   const [error, setError] =
-    useState("");
-
-  const [page, setPage] =
-    useState(1);
-
-  const [invoiceNumber, setInvoiceNumber] =
-    useState("");
-
-  const [paymentMethod, setPaymentMethod] =
     useState("");
 
   const fetchSales = async () => {
@@ -44,23 +51,36 @@ function SalesPage() {
       setError("");
 
       const response =
-        await getSales({
-          page,
-          limit: 20,
-          invoiceNumber,
-          paymentMethod,
+        await saleService.getSales({
+          page: pagination.page,
+          limit: pagination.limit,
+          startDate:
+            filters.startDate || undefined,
+          endDate:
+            filters.endDate || undefined,
+          paymentMethod:
+            filters.paymentMethod ||
+            undefined,
         });
 
+      const responseData =
+        response.data || {};
+
       setSales(
-        response.data?.sales || []
+        responseData.sales || []
       );
 
       setPagination(
-        response.data?.pagination || null
+        responseData.pagination || {
+          page: 1,
+          limit: 10,
+          total: 0,
+          totalPages: 1,
+        }
       );
-    } catch (error) {
+    } catch (err) {
       setError(
-        error.response?.data?.message ||
+        err.response?.data?.message ||
           "Failed to load sales."
       );
     } finally {
@@ -69,246 +89,214 @@ function SalesPage() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchSales();
-    }, 400);
-
-    return () =>
-      clearTimeout(timer);
+    fetchSales();
   }, [
-    page,
-    invoiceNumber,
-    paymentMethod,
+    pagination.page,
+    pagination.limit,
+    filters.startDate,
+    filters.endDate,
+    filters.paymentMethod,
   ]);
+
+  const handleFilterChange = (
+    field,
+    value
+  ) => {
+    setFilters((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+
+    setPagination((previous) => ({
+      ...previous,
+      page: 1,
+    }));
+  };
+
+  const handleReset = () => {
+    setFilters({
+      startDate: "",
+      endDate: "",
+      paymentMethod: "",
+    });
+
+    setPagination((previous) => ({
+      ...previous,
+      page: 1,
+    }));
+  };
+
+  const handlePageChange = (page) => {
+    setPagination((previous) => ({
+      ...previous,
+      page,
+    }));
+  };
+
+  const handleView = (sale) => {
+    navigate(`/sales/${sale._id}`);
+  };
+
+  const handleReceipt = (sale) => {
+    navigate(
+      `/sales/${sale._id}/receipt`
+    );
+  };
+
+  const currentPageTotal =
+    sales.reduce(
+      (total, sale) =>
+        total +
+        Number(
+          sale.grandTotal || 0
+        ),
+      0
+    );
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Sales
-        </h1>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
+          <ReceiptText size={24} />
+        </div>
 
-        <p className="mt-1 text-sm text-gray-500">
-          View and manage completed sales.
-        </p>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Sales
+          </h1>
+
+          <p className="text-sm text-gray-500">
+            View and manage sales history
+          </p>
+        </div>
       </div>
 
+      {/* Error */}
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <AlertCircle
+            size={20}
+            className="mt-0.5 shrink-0"
+          />
+
+          <p className="flex-1 text-sm">
+            {error}
+          </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              setError("")
+            }
+          >
+            <X size={18} />
+          </button>
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-        <div className="flex flex-col gap-4 border-b p-5 lg:flex-row">
-          <div className="relative flex-1">
-            <Search
-              size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
+      {/* Summary */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">
+            Total Sales Records
+          </p>
 
-            <input
-              type="text"
-              value={invoiceNumber}
-              onChange={(event) => {
-                setInvoiceNumber(
-                  event.target.value
-                );
-
-                setPage(1);
-              }}
-              placeholder="Search invoice number..."
-              className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500"
-            />
-          </div>
-
-          <select
-            value={paymentMethod}
-            onChange={(event) => {
-              setPaymentMethod(
-                event.target.value
-              );
-
-              setPage(1);
-            }}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-          >
-            <option value="">
-              All Payment Methods
-            </option>
-
-            <option value="cash">
-              Cash
-            </option>
-
-            <option value="card">
-              Card
-            </option>
-
-            <option value="bank_transfer">
-              Bank Transfer
-            </option>
-          </select>
+          <p className="mt-1 text-2xl font-bold text-gray-900">
+            {pagination.total}
+          </p>
         </div>
 
-        {loading ? (
-          <div className="p-10 text-center text-sm text-gray-500">
-            Loading sales...
-          </div>
-        ) : sales.length === 0 ? (
-          <div className="p-10 text-center text-sm text-gray-500">
-            No sales found.
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1000px]">
-                <thead className="border-b bg-gray-50">
-                  <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Invoice
-                    </th>
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">
+            Current Page Revenue
+          </p>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Customer
-                    </th>
-
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Payment
-                    </th>
-
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Cashier
-                    </th>
-
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Total
-                    </th>
-
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Date
-                    </th>
-
-                    <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y">
-                  {sales.map((sale) => (
-                    <tr
-                      key={sale._id}
-                      className="hover:bg-gray-50"
-                    >
-                      <td className="px-5 py-4 text-sm font-medium text-gray-900">
-                        {sale.invoiceNumber}
-                      </td>
-
-                      <td className="px-5 py-4 text-sm text-gray-600">
-                        {sale.customerName ||
-                          "Walk-in Customer"}
-                      </td>
-
-                      <td className="px-5 py-4">
-                        <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-blue-700">
-                          {sale.paymentMethod.replace(
-                            "_",
-                            " "
-                          )}
-                        </span>
-                      </td>
-
-                      <td className="px-5 py-4">
-                        <p className="text-sm text-gray-900">
-                          {sale.cashier?.name ||
-                            "-"}
-                        </p>
-
-                        <p className="text-xs text-gray-500">
-                          {sale.cashier?.email ||
-                            ""}
-                        </p>
-                      </td>
-
-                      <td className="px-5 py-4 text-sm font-semibold text-gray-900">
-                        Rs.{" "}
-                        {sale.grandTotal.toFixed(
-                          2
-                        )}
-                      </td>
-
-                      <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-600">
-                        {new Date(
-                          sale.createdAt
-                        ).toLocaleString()}
-                      </td>
-
-                      <td className="px-5 py-4 text-right">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            navigate(
-                              `/sales/${sale._id}`
-                            )
-                          }
-                          className="rounded-lg p-2 text-blue-600 hover:bg-blue-50"
-                        >
-                          <Eye size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {pagination && (
-              <div className="flex items-center justify-between border-t px-5 py-4">
-                <p className="text-sm text-gray-500">
-                  Page {pagination.page} of{" "}
-                  {pagination.totalPages}
-                </p>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    disabled={page <= 1}
-                    onClick={() =>
-                      setPage(
-                        (currentPage) =>
-                          currentPage - 1
-                      )
-                    }
-                    className="rounded-lg border p-2 disabled:opacity-40"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={
-                      page >=
-                      pagination.totalPages
-                    }
-                    onClick={() =>
-                      setPage(
-                        (currentPage) =>
-                          currentPage + 1
-                      )
-                    }
-                    className="rounded-lg border p-2 disabled:opacity-40"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
+          <p className="mt-1 text-2xl font-bold text-gray-900">
+            Rs.{" "}
+            {currentPageTotal.toLocaleString()}
+          </p>
+        </div>
       </div>
+
+      {/* Filters */}
+      <SalesFilters
+        startDate={filters.startDate}
+        endDate={filters.endDate}
+        paymentMethod={
+          filters.paymentMethod
+        }
+        onStartDateChange={(value) =>
+          handleFilterChange(
+            "startDate",
+            value
+          )
+        }
+        onEndDateChange={(value) =>
+          handleFilterChange(
+            "endDate",
+            value
+          )
+        }
+        onPaymentMethodChange={(value) =>
+          handleFilterChange(
+            "paymentMethod",
+            value
+          )
+        }
+        onReset={handleReset}
+      />
+
+      {/* Table */}
+      <SalesTable
+        sales={sales}
+        loading={loading}
+        onView={handleView}
+        onReceipt={handleReceipt}
+      />
+
+      {/* Pagination */}
+      {pagination.totalPages > 1 && (
+        <div className="flex items-center justify-center gap-3">
+          <button
+            type="button"
+            disabled={
+              pagination.page === 1
+            }
+            onClick={() =>
+              handlePageChange(
+                pagination.page - 1
+              )
+            }
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Previous
+          </button>
+
+          <span className="text-sm text-gray-600">
+            Page {pagination.page} of{" "}
+            {pagination.totalPages}
+          </span>
+
+          <button
+            type="button"
+            disabled={
+              pagination.page ===
+              pagination.totalPages
+            }
+            onClick={() =>
+              handlePageChange(
+                pagination.page + 1
+              )
+            }
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default SalesPage;

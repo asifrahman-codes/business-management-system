@@ -1,54 +1,48 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import {
-  createSupplier,
-  getSupplierById,
-  updateSupplier,
-} from "../../services/supplierService";
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
-import { supplierSchema } from "../../validators/supplier.schema";
+import {
+  ArrowLeft,
+  AlertCircle,
+  X,
+} from "lucide-react";
 
-import PageContainer from "../../components/ui/PageContainer";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ErrorMessage from "../../components/common/ErrorMessage";
+import supplierService from "../../services/supplier.service";
+
+const initialForm = {
+  name: "",
+  contactPerson: "",
+  phone: "",
+  email: "",
+  address: "",
+};
 
 const SupplierFormPage = () => {
   const navigate = useNavigate();
+
   const { id } = useParams();
 
   const isEditMode = Boolean(id);
 
+  const [form, setForm] =
+    useState(initialForm);
+
   const [loading, setLoading] =
     useState(isEditMode);
 
-  const [error, setError] = useState("");
+  const [submitting, setSubmitting] =
+    useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: {
-      errors,
-      isSubmitting,
-    },
-  } = useForm({
-    resolver: yupResolver(supplierSchema),
+  const [error, setError] =
+    useState("");
 
-    defaultValues: {
-      name: "",
-      contactPerson: "",
-      phone: "",
-      email: "",
-      address: "",
-    },
-  });
-
-  /*
-   * Load supplier when editing
-   */
   useEffect(() => {
     if (!isEditMode) {
       return;
@@ -60,21 +54,28 @@ const SupplierFormPage = () => {
         setError("");
 
         const response =
-          await getSupplierById(id);
+          await supplierService.getSupplierById(
+            id
+          );
 
-        const supplier = response.data;
+        const supplier =
+          response.data;
 
-        reset({
-          name: supplier.name || "",
+        setForm({
+          name:
+            supplier.name || "",
           contactPerson:
             supplier.contactPerson || "",
-          phone: supplier.phone || "",
-          email: supplier.email || "",
-          address: supplier.address || "",
+          phone:
+            supplier.phone || "",
+          email:
+            supplier.email || "",
+          address:
+            supplier.address || "",
         });
-      } catch (error) {
+      } catch (err) {
         setError(
-          error.response?.data?.message ||
+          err.response?.data?.message ||
             "Failed to load supplier."
         );
       } finally {
@@ -83,38 +84,72 @@ const SupplierFormPage = () => {
     };
 
     fetchSupplier();
-  }, [id, isEditMode, reset]);
+  }, [id, isEditMode]);
 
-  /*
-   * Submit
-   */
-  const onSubmit = async (data) => {
+  const handleChange = (
+    field
+  ) => (event) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]:
+        event.target.value,
+    }));
+  };
+
+  const handleSubmit = async (
+    event
+  ) => {
+    event.preventDefault();
+
     try {
+      setSubmitting(true);
       setError("");
 
       if (isEditMode) {
-        await updateSupplier(id, data);
+        await supplierService.updateSupplier(
+          id,
+          form
+        );
       } else {
-        await createSupplier(data);
+        await supplierService.createSupplier(
+          form
+        );
       }
 
       navigate("/suppliers");
-    } catch (error) {
+    } catch (err) {
       setError(
-        error.response?.data?.message ||
+        err.response?.data?.message ||
           "Failed to save supplier."
       );
+    } finally {
+      setSubmitting(false);
     }
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="flex min-h-[300px] items-center justify-center text-gray-500">
+        Loading supplier...
+      </div>
+    );
   }
 
   return (
-    <PageContainer>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-6">
+      <div>
+        <button
+          type="button"
+          onClick={() =>
+            navigate("/suppliers")
+          }
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft size={18} />
+          Back to Suppliers
+        </button>
+
         <h1 className="text-2xl font-bold text-gray-900">
           {isEditMode
             ? "Edit Supplier"
@@ -130,162 +165,146 @@ const SupplierFormPage = () => {
 
       {/* Error */}
       {error && (
-        <div className="mb-5">
-          <ErrorMessage message={error} />
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <AlertCircle
+            size={20}
+            className="mt-0.5 shrink-0"
+          />
+
+          <p className="flex-1 text-sm">
+            {error}
+          </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              setError("")
+            }
+          >
+            <X size={18} />
+          </button>
         </div>
       )}
 
-      {/* Form */}
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="max-w-3xl rounded-xl border bg-white p-6 shadow-sm"
+        onSubmit={handleSubmit}
+        className="max-w-3xl rounded-xl border border-gray-200 bg-white shadow-sm"
       >
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {/* Supplier Name */}
-          <div className="md:col-span-2">
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+        <div className="space-y-5 p-6">
+          {/* Name */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Supplier Name
-              <span className="ml-1 text-red-500">
-                *
-              </span>
             </label>
 
             <input
-              id="name"
               type="text"
+              value={form.name}
+              onChange={handleChange(
+                "name"
+              )}
+              required
+              minLength={2}
+              maxLength={100}
               placeholder="e.g. ABC Distributors"
-              {...register("name")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.name.message}
-              </p>
-            )}
           </div>
 
           {/* Contact Person */}
           <div>
-            <label
-              htmlFor="contactPerson"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Contact Person
             </label>
 
             <input
-              id="contactPerson"
               type="text"
-              placeholder="e.g. Ahmed Khan"
-              {...register("contactPerson")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              value={
+                form.contactPerson
+              }
+              onChange={handleChange(
+                "contactPerson"
+              )}
+              maxLength={100}
+              placeholder="e.g. Muhammad Ali"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
-            {errors.contactPerson && (
-              <p className="mt-1 text-sm text-red-600">
-                {
-                  errors.contactPerson
-                    .message
-                }
-              </p>
-            )}
           </div>
 
           {/* Phone */}
           <div>
-            <label
-              htmlFor="phone"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Phone
             </label>
 
             <input
-              id="phone"
               type="text"
+              value={form.phone}
+              onChange={handleChange(
+                "phone"
+              )}
+              maxLength={20}
               placeholder="e.g. 03001234567"
-              {...register("phone")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
-            {errors.phone && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.phone.message}
-              </p>
-            )}
           </div>
 
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Email
             </label>
 
             <input
-              id="email"
               type="email"
+              value={form.email}
+              onChange={handleChange(
+                "email"
+              )}
+              maxLength={100}
               placeholder="e.g. supplier@example.com"
-              {...register("email")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
-            )}
           </div>
 
           {/* Address */}
           <div>
-            <label
-              htmlFor="address"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Address
             </label>
 
             <textarea
-              id="address"
-              rows={3}
-              placeholder="Supplier address..."
-              {...register("address")}
-              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              value={form.address}
+              onChange={handleChange(
+                "address"
+              )}
+              maxLength={500}
+              rows={4}
+              placeholder="Supplier address"
+              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
-            {errors.address && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.address.message}
-              </p>
-            )}
           </div>
         </div>
 
         {/* Actions */}
-        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <div className="flex justify-end gap-3 border-t border-gray-200 px-6 py-4">
           <button
             type="button"
             onClick={() =>
               navigate("/suppliers")
             }
-            className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+            disabled={submitting}
+            className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={submitting}
             className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isSubmitting
+            {submitting
               ? "Saving..."
               : isEditMode
               ? "Update Supplier"
@@ -293,7 +312,7 @@ const SupplierFormPage = () => {
           </button>
         </div>
       </form>
-    </PageContainer>
+    </div>
   );
 };
 

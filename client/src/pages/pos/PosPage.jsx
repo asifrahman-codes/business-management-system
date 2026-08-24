@@ -3,10 +3,7 @@ import {
   useState,
 } from "react";
 
-import {
-  searchProductsForPos,
-  createSale,
-} from "../../services/sale.service";
+import saleService from "../../services/sale.service";
 
 import ProductSearch from "../../components/pos/ProductSearch";
 import PosCart from "../../components/pos/PosCart";

@@ -34,14 +34,18 @@ import PosPage from "../pages/pos/PosPage";
 
 import SalesPage from "../pages/sales/SalesPage";
 import SaleDetailsPage from "../pages/sales/SaleDetailsPage";
+import SaleReceiptPage from "../pages/sales/SaleReceiptPage";
 
 import EmployeesPage from "../pages/employees/EmployeesPage";
+
+import Expenses from "../pages/expenses/ExpensesPage";
 
 import SalaryPaymentsPage from "../pages/salary/SalaryPaymentsPage";
 
 import ReportsPage from "../pages/reports/ReportsPage";
 
-import FinancePage from "../pages/finance/FinancePage";
+import SettingsPage from "../pages/settings/SettingsPage";
+import ExpensesPage from "../pages/expenses/ExpensesPage";
 
 function AppRoutes() {
   return (
@@ -169,6 +173,13 @@ function AppRoutes() {
                 element={<EmployeesPage />}
               />
 
+              {/* Expenses */}
+
+              <Route
+                path="/expenses"
+                element={<ExpensesPage />}
+              />
+
               {/* Salary Payments */}
 
               <Route
@@ -184,13 +195,25 @@ function AppRoutes() {
               />
 
               <Route
-              path="/finance"
-              element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <FinancePage />
-                </ProtectedRoute>
-              }
-              />
+  path="/sales"
+  element={<SalesPage />}
+/>
+
+<Route
+  path="/sales/:id"
+  element={<SaleDetailsPage />}
+/>
+
+<Route
+  path="/sales/:id/receipt"
+  element={<SaleReceiptPage />}
+/>
+<Route
+  path="/settings"
+  element={
+    <SettingsPage />
+  }
+/>
 
             </Route>
 

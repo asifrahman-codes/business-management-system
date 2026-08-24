@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import {
   BarChart3,
   Box,
+  Boxes,
   ClipboardList,
   LayoutDashboard,
   ShoppingCart,
@@ -9,6 +10,10 @@ import {
   Wallet,
   X,
   History,
+  BadgePercent,
+  Settings,
+  Receipt,
+  BanknoteArrowDown,
 } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
@@ -33,6 +38,12 @@ const navigation = [
     icon: Box,
     roles: [USER_ROLES.ADMIN],
   },
+    {
+    label: "Categories",
+    path: "/Categories",
+    icon: Boxes,
+    roles: [USER_ROLES.ADMIN],
+  },
   {
     label: "Inventory",
     path: "/inventory",
@@ -46,9 +57,21 @@ const navigation = [
   roles: [USER_ROLES.ADMIN],
 },
   {
+  label: "Sales",
+  path: "/Sales",
+  icon: BadgePercent,
+  roles: [USER_ROLES.ADMIN],
+},
+  {
     label: "Employees",
     path: "/employees",
     icon: Users,
+    roles: [USER_ROLES.ADMIN],
+  },
+    {
+    label: "Expenses",
+    path: "/Expenses",
+    icon: Receipt,
     roles: [USER_ROLES.ADMIN],
   },
   {
@@ -57,18 +80,18 @@ const navigation = [
   icon: Wallet,
   roles: [USER_ROLES.ADMIN],
 },
-  // {
-  //   label: "Finance",
-  //   path: "/finance",
-  //   icon: Wallet,
-  //   roles: [USER_ROLES.ADMIN],
-  // },
   {
     label: "Reports",
     path: "/reports",
     icon: BarChart3,
     roles: [USER_ROLES.ADMIN],
   },
+  {
+  label: "Settings",
+  path: "/settings",
+  icon: Settings,
+  roles: [USER_ROLES.ADMIN],
+}
 ];
 
 function Sidebar({ isOpen, onClose }) {

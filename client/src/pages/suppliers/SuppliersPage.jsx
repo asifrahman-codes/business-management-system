@@ -1,62 +1,77 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
-  ChevronLeft,
-  ChevronRight,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  Link,
+} from "react-router-dom";
+
+import {
   Plus,
   Search,
+  Pencil,
+  Trash2,
+  Truck,
+  AlertCircle,
+  X,
 } from "lucide-react";
 
-import {
-  deleteSupplier,
-  getSuppliers,
-} from "../../services/supplierService";
-
-import PageContainer from "../../components/ui/PageContainer";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ErrorMessage from "../../components/common/ErrorMessage";
-import EmptyState from "../../components/common/EmptyState";
+import supplierService from "../../services/supplier.service";
 
 const SuppliersPage = () => {
-  const [suppliers, setSuppliers] = useState([]);
+  const [suppliers, setSuppliers] =
+    useState([]);
 
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [pagination, setPagination] =
+    useState({
+      page: 1,
+      limit: 10,
+      total: 0,
+      totalPages: 1,
+    });
 
-  const [pagination, setPagination] = useState({
-    total: 0,
-    page: 1,
-    limit: 20,
-    totalPages: 1,
-  });
+  const [search, setSearch] =
+    useState("");
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [message, setMessage] =
+    useState("");
 
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const response = await getSuppliers({
-        page,
-        limit: 20,
-        search: search.trim() || undefined,
-      });
+      const response =
+        await supplierService.getSuppliers({
+          page: pagination.page,
+          limit: pagination.limit,
+          search: search || undefined,
+          sortBy: "createdAt",
+          sortOrder: "desc",
+        });
 
-      setSuppliers(response.data || []);
+      setSuppliers(
+        response.data || []
+      );
 
       setPagination(
         response.pagination || {
-          total: 0,
           page: 1,
-          limit: 20,
+          limit: 10,
+          total: 0,
           totalPages: 1,
         }
       );
-    } catch (error) {
+    } catch (err) {
       setError(
-        error.response?.data?.message ||
+        err.response?.data?.message ||
           "Failed to load suppliers."
       );
     } finally {
@@ -66,287 +81,340 @@ const SuppliersPage = () => {
 
   useEffect(() => {
     fetchSuppliers();
-  }, [page]);
+  }, [
+    pagination.page,
+    pagination.limit,
+    search,
+  ]);
 
-  const handleSearch = (event) => {
-    event.preventDefault();
+  const handleSearchChange = (
+    event
+  ) => {
+    setSearch(event.target.value);
 
-    setPage(1);
-
-    fetchSuppliers();
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
+    }));
   };
 
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this supplier?"
-    );
+  const handleDelete = async (
+    supplier
+  ) => {
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to delete "${supplier.name}"?`
+      );
 
     if (!confirmed) {
       return;
     }
 
     try {
+      setLoading(true);
       setError("");
 
-      await deleteSupplier(id);
+      const response =
+        await supplierService.deleteSupplier(
+          supplier._id
+        );
+
+      setMessage(
+        response.message ||
+          "Supplier deleted successfully."
+      );
 
       await fetchSuppliers();
-    } catch (error) {
+    } catch (err) {
       setError(
-        error.response?.data?.message ||
+        err.response?.data?.message ||
           "Failed to delete supplier."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
-  const formatDate = (date) => {
-    if (!date) {
-      return "-";
-    }
-
-    return new Date(date).toLocaleDateString();
+  const handlePageChange = (
+    page
+  ) => {
+    setPagination((prev) => ({
+      ...prev,
+      page,
+    }));
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
-    <PageContainer>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Suppliers
-          </h1>
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
+            <Truck size={24} />
+          </div>
 
-          <p className="mt-1 text-sm text-gray-500">
-            Manage your product suppliers.
-          </p>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Suppliers
+            </h1>
+
+            <p className="text-sm text-gray-500">
+              Manage product suppliers and
+              their contact information
+            </p>
+          </div>
         </div>
 
         <Link
           to="/suppliers/new"
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
         >
           <Plus size={18} />
-
           Add Supplier
         </Link>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="mb-5">
-          <ErrorMessage message={error} />
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <AlertCircle
+            size={20}
+            className="mt-0.5 shrink-0"
+          />
+
+          <p className="flex-1 text-sm">
+            {error}
+          </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              setError("")
+            }
+          >
+            <X size={18} />
+          </button>
         </div>
       )}
 
-      {/* Search */}
-      <div className="mb-5 rounded-xl border bg-white p-4 shadow-sm">
-        <form
-          onSubmit={handleSearch}
-          className="flex flex-col gap-3 sm:flex-row"
-        >
-          <div className="relative flex-1">
-            <Search
-              size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-
-            <input
-              type="text"
-              value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              placeholder="Search suppliers..."
-              className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
+      {/* Success */}
+      {message && (
+        <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          <span>{message}</span>
 
           <button
-            type="submit"
-            className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
+            type="button"
+            onClick={() =>
+              setMessage("")
+            }
           >
-            Search
+            <X size={18} />
           </button>
-        </form>
+        </div>
+      )}
+
+      {/* Summary */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">
+            Total Suppliers
+          </p>
+
+          <p className="mt-1 text-2xl font-bold text-gray-900">
+            {pagination.total}
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">
+            Showing
+          </p>
+
+          <p className="mt-1 text-2xl font-bold text-gray-900">
+            {suppliers.length}
+          </p>
+        </div>
       </div>
 
-      {/* Empty State */}
-      {suppliers.length === 0 ? (
-        <EmptyState
-          title={
-            search
-              ? "No suppliers found"
-              : "No suppliers yet"
-          }
-          message={
-            search
-              ? "Try changing your search."
-              : "Create your first supplier to get started."
-          }
-        />
-      ) : (
-        <>
-          {/* Supplier Table */}
-          <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[900px]">
-                <thead className="border-b bg-gray-50">
-                  <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Supplier
-                    </th>
+      {/* Search */}
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="relative max-w-md">
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Contact Person
-                    </th>
+          <input
+            type="text"
+            value={search}
+            onChange={
+              handleSearchChange
+            }
+            placeholder="Search suppliers..."
+            className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+        </div>
+      </div>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Phone
-                    </th>
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-50">
+              <tr className="border-b border-gray-200">
+                <th className="px-5 py-3 text-left font-semibold text-gray-700">
+                  Supplier
+                </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Email
-                    </th>
+                <th className="px-5 py-3 text-left font-semibold text-gray-700">
+                  Contact Person
+                </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Address
-                    </th>
+                <th className="px-5 py-3 text-left font-semibold text-gray-700">
+                  Phone
+                </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
-                      Created
-                    </th>
+                <th className="px-5 py-3 text-left font-semibold text-gray-700">
+                  Email
+                </th>
 
-                    <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
+                <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
 
-                <tbody className="divide-y">
-                  {suppliers.map((supplier) => (
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-5 py-10 text-center text-gray-500"
+                  >
+                    Loading suppliers...
+                  </td>
+                </tr>
+              ) : suppliers.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-5 py-10 text-center text-gray-500"
+                  >
+                    No suppliers found.
+                  </td>
+                </tr>
+              ) : (
+                suppliers.map(
+                  (supplier) => (
                     <tr
                       key={supplier._id}
-                      className="transition hover:bg-gray-50"
+                      className="border-b border-gray-100 transition hover:bg-gray-50"
                     >
-                      {/* Name */}
                       <td className="px-5 py-4">
-                        <div className="text-sm font-medium text-gray-900">
+                        <p className="font-medium text-gray-900">
                           {supplier.name}
-                        </div>
+                        </p>
+
+                        {supplier.address && (
+                          <p className="mt-1 max-w-xs truncate text-xs text-gray-500">
+                            {supplier.address}
+                          </p>
+                        )}
                       </td>
 
-                      {/* Contact Person */}
-                      <td className="px-5 py-4 text-sm text-gray-600">
+                      <td className="px-5 py-4 text-gray-600">
                         {supplier.contactPerson ||
                           "-"}
                       </td>
 
-                      {/* Phone */}
-                      <td className="px-5 py-4 text-sm text-gray-600">
-                        {supplier.phone || "-"}
+                      <td className="px-5 py-4 text-gray-600">
+                        {supplier.phone ||
+                          "-"}
                       </td>
 
-                      {/* Email */}
-                      <td className="px-5 py-4 text-sm text-gray-600">
-                        {supplier.email || "-"}
+                      <td className="px-5 py-4 text-gray-600">
+                        {supplier.email ||
+                          "-"}
                       </td>
 
-                      {/* Address */}
-                      <td className="max-w-[220px] px-5 py-4 text-sm text-gray-600">
-                        <span className="block truncate">
-                          {supplier.address || "-"}
-                        </span>
-                      </td>
-
-                      {/* Created */}
-                      <td className="px-5 py-4 text-sm text-gray-600">
-                        {formatDate(
-                          supplier.createdAt
-                        )}
-                      </td>
-
-                      {/* Actions */}
                       <td className="px-5 py-4">
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-1">
                           <Link
                             to={`/suppliers/${supplier._id}/edit`}
-                            className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+                            title="Edit"
+                            className="rounded-lg p-2 text-gray-600 transition hover:bg-gray-100 hover:text-blue-600"
                           >
-                            Edit
+                            <Pencil
+                              size={17}
+                            />
                           </Link>
 
                           <button
                             type="button"
+                            title="Delete"
                             onClick={() =>
                               handleDelete(
-                                supplier._id
+                                supplier
                               )
                             }
-                            className="rounded-md px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                            className="rounded-lg p-2 text-gray-600 transition hover:bg-red-50 hover:text-red-600"
                           >
-                            Delete
+                            <Trash2
+                              size={17}
+                            />
                           </button>
                         </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  )
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-            {/* Pagination */}
-            <div className="flex flex-col gap-3 border-t px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-gray-500">
-                Showing page{" "}
-                <span className="font-medium text-gray-700">
-                  {pagination.page}
-                </span>{" "}
-                of{" "}
-                <span className="font-medium text-gray-700">
-                  {pagination.totalPages}
-                </span>{" "}
-                ({pagination.total} suppliers)
-              </p>
+      {/* Pagination */}
+      {pagination.totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          <button
+            type="button"
+            disabled={
+              pagination.page === 1
+            }
+            onClick={() =>
+              handlePageChange(
+                pagination.page - 1
+              )
+            }
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Previous
+          </button>
 
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  disabled={page <= 1}
-                  onClick={() =>
-                    setPage(
-                      (current) => current - 1
-                    )
-                  }
-                  className="rounded-lg border p-2 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-
-                <button
-                  type="button"
-                  disabled={
-                    page >=
-                    pagination.totalPages
-                  }
-                  onClick={() =>
-                    setPage(
-                      (current) => current + 1
-                    )
-                  }
-                  className="rounded-lg border p-2 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
-            </div>
+          <div className="flex items-center px-3 text-sm text-gray-600">
+            Page {pagination.page} of{" "}
+            {pagination.totalPages}
           </div>
-        </>
+
+          <button
+            type="button"
+            disabled={
+              pagination.page ===
+              pagination.totalPages
+            }
+            onClick={() =>
+              handlePageChange(
+                pagination.page + 1
+              )
+            }
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       )}
-    </PageContainer>
+    </div>
   );
 };
 
