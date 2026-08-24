@@ -34,6 +34,8 @@ import PosPage from "../pages/pos/PosPage";
 import SalesPage from "../pages/sales/SalesPage";
 import SaleDetailsPage from "../pages/sales/SaleDetailsPage";
 
+import EmployeesPage from "../pages/employees/EmployeesPage";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -163,6 +165,10 @@ function AppRoutes() {
 <Route
   path="/inventory/transactions"
   element={<InventoryTransactionsPage />}
+/>
+<Route
+  path="/employees"
+  element={<EmployeesPage />}
 />
     </Route>
 
