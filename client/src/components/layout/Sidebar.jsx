@@ -13,7 +13,6 @@ import {
   BadgePercent,
   Settings,
   Receipt,
-  BanknoteArrowDown,
 } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
@@ -38,7 +37,7 @@ const navigation = [
     icon: Box,
     roles: [USER_ROLES.ADMIN],
   },
-    {
+  {
     label: "Categories",
     path: "/Categories",
     icon: Boxes,
@@ -51,35 +50,35 @@ const navigation = [
     roles: [USER_ROLES.ADMIN],
   },
   {
-  label: "Inventory Transactions",
-  path: "/inventory/transactions",
-  icon: History,
-  roles: [USER_ROLES.ADMIN],
-},
+    label: "Inventory Transactions",
+    path: "/inventory/transactions",
+    icon: History,
+    roles: [USER_ROLES.ADMIN],
+  },
   {
-  label: "Sales",
-  path: "/Sales",
-  icon: BadgePercent,
-  roles: [USER_ROLES.ADMIN],
-},
+    label: "Sales",
+    path: "/Sales",
+    icon: BadgePercent,
+    roles: [USER_ROLES.ADMIN],
+  },
   {
     label: "Employees",
     path: "/employees",
     icon: Users,
     roles: [USER_ROLES.ADMIN],
   },
-    {
+  {
     label: "Expenses",
     path: "/Expenses",
     icon: Receipt,
     roles: [USER_ROLES.ADMIN],
   },
   {
-  label: "Salary Payments",
-  path: "/salary-payments",
-  icon: Wallet,
-  roles: [USER_ROLES.ADMIN],
-},
+    label: "Salary Payments",
+    path: "/salary-payments",
+    icon: Wallet,
+    roles: [USER_ROLES.ADMIN],
+  },
   {
     label: "Reports",
     path: "/reports",
@@ -87,11 +86,11 @@ const navigation = [
     roles: [USER_ROLES.ADMIN],
   },
   {
-  label: "Settings",
-  path: "/settings",
-  icon: Settings,
-  roles: [USER_ROLES.ADMIN],
-}
+    label: "Settings",
+    path: "/settings",
+    icon: Settings,
+    roles: [USER_ROLES.ADMIN],
+  },
 ];
 
 function Sidebar({ isOpen, onClose }) {
@@ -99,9 +98,10 @@ function Sidebar({ isOpen, onClose }) {
 
   const userRole = user?.role;
 
-  const visibleNavigation = navigation.filter((item) =>
-    item.roles.includes(userRole)
-  );
+  const visibleNavigation =
+    navigation.filter((item) =>
+      item.roles.includes(userRole)
+    );
 
   return (
     <>
@@ -117,19 +117,22 @@ function Sidebar({ isOpen, onClose }) {
           fixed inset-y-0 left-0 z-50 w-64
           transform bg-white shadow-xl
           transition-transform duration-300
+          dark:bg-gray-900
+          dark:shadow-black/30
           lg:static lg:translate-x-0 lg:shadow-none
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         <div className="flex h-full flex-col">
+
           {/* Logo */}
-          <div className="flex h-16 items-center justify-between border-b px-5">
+          <div className="flex h-16 items-center justify-between border-b px-5 dark:border-gray-700">
             <div>
-              <h1 className="text-lg font-bold text-gray-900">
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">
                 BMS
               </h1>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Business Management
               </p>
             </div>
@@ -137,7 +140,7 @@ function Sidebar({ isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"
             >
               <X size={20} />
             </button>
@@ -159,8 +162,8 @@ function Sidebar({ isOpen, onClose }) {
                     text-sm font-medium transition
                     ${
                       isActive
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                     }
                     `
                   }
