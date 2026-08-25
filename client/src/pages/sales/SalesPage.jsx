@@ -157,16 +157,16 @@ const SalesPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
+        <div className="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
           <ReceiptText size={24} />
         </div>
 
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Sales
           </h1>
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             View and manage sales history
           </p>
         </div>
@@ -174,7 +174,7 @@ const SalesPage = () => {
 
       {/* Error */}
       {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
           <AlertCircle
             size={20}
             className="mt-0.5 shrink-0"
@@ -189,6 +189,7 @@ const SalesPage = () => {
             onClick={() =>
               setError("")
             }
+            className="transition hover:text-red-900 dark:hover:text-red-300"
           >
             <X size={18} />
           </button>
@@ -197,22 +198,22 @@ const SalesPage = () => {
 
       {/* Summary */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Total Sales Records
           </p>
 
-          <p className="mt-1 text-2xl font-bold text-gray-900">
+          <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
             {pagination.total}
           </p>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Current Page Revenue
           </p>
 
-          <p className="mt-1 text-2xl font-bold text-gray-900">
+          <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
             Rs.{" "}
             {currentPageTotal.toLocaleString()}
           </p>
@@ -268,12 +269,12 @@ const SalesPage = () => {
                 pagination.page - 1
               )
             }
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             Previous
           </button>
 
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-gray-600 dark:text-gray-400">
             Page {pagination.page} of{" "}
             {pagination.totalPages}
           </span>
@@ -289,7 +290,7 @@ const SalesPage = () => {
                 pagination.page + 1
               )
             }
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             Next
           </button>

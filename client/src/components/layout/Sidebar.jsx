@@ -13,6 +13,8 @@ import {
   BadgePercent,
   Settings,
   Receipt,
+  Warehouse,
+  Package,
 } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
@@ -41,6 +43,12 @@ const navigation = [
     label: "Categories",
     path: "/Categories",
     icon: Boxes,
+    roles: [USER_ROLES.ADMIN],
+  },
+  {
+    label: "Suppliers",
+    path: "/Suppliers",
+    icon: Package  ,
     roles: [USER_ROLES.ADMIN],
   },
   {

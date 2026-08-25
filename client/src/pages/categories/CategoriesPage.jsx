@@ -67,11 +67,11 @@ function CategoriesPage() {
     <PageContainer>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Categories
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Organize your products into categories.
           </p>
         </div>
@@ -97,36 +97,36 @@ function CategoriesPage() {
           message="Create your first category."
         />
       ) : (
-        <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[700px]">
-              <thead className="border-b bg-gray-50">
+              <thead className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                 <tr>
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                     Name
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                     Description
                   </th>
 
-                  <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600 dark:text-gray-300">
                     Actions
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {categories.map((category) => (
                   <tr
                     key={category._id}
-                    className="hover:bg-gray-50"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
-                    <td className="px-5 py-4 text-sm font-medium text-gray-900">
+                    <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-white">
                       {category.name}
                     </td>
 
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                       {category.description || "-"}
                     </td>
 
@@ -134,7 +134,7 @@ function CategoriesPage() {
                       <div className="flex justify-end gap-2">
                         <Link
                           to={`/categories/${category._id}/edit`}
-                          className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
+                          className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                         >
                           Edit
                         </Link>
@@ -142,11 +142,9 @@ function CategoriesPage() {
                         <button
                           type="button"
                           onClick={() =>
-                            handleDelete(
-                              category._id
-                            )
+                            handleDelete(category._id)
                           }
-                          className="rounded-md px-3 py-1.5 text-sm text-red-600 hover:bg-red-50"
+                          className="rounded-md px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
                         >
                           Delete
                         </button>

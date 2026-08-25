@@ -68,22 +68,6 @@ const EmployeesPage = () => {
         status: status || undefined,
       });
 
-      /*
-       * Backend response:
-       *
-       * {
-       *   success: true,
-       *   data: [...],
-       *   pagination: {...}
-       * }
-       *
-       * employee.service.js returns response.data,
-       * therefore:
-       *
-       * response.data = employees array
-       * response.pagination = pagination
-       */
-
       setEmployees(
         Array.isArray(response.data)
           ? response.data
@@ -276,11 +260,6 @@ const EmployeesPage = () => {
           "Employee deleted successfully."
       );
 
-      /*
-       * If the last employee on the
-       * current page was deleted,
-       * move back one page.
-       */
       if (
         employees.length === 1 &&
         pagination.page > 1
@@ -380,17 +359,17 @@ const EmployeesPage = () => {
   };
 
   return (
-    <div className="min-h-full bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-full bg-gray-50 p-4 dark:bg-gray-900 sm:p-6 lg:p-8">
 
       {/* Page Header */}
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
 
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
             Employees
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Manage your business employees
           </p>
         </div>
@@ -398,7 +377,7 @@ const EmployeesPage = () => {
         <button
           type="button"
           onClick={handleAdd}
-          className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
         >
           <Plus size={18} />
           Add Employee
@@ -408,7 +387,7 @@ const EmployeesPage = () => {
 
       {/* Error */}
       {error && (
-        <div className="mb-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mb-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300">
 
           <AlertCircle
             size={19}
@@ -422,7 +401,7 @@ const EmployeesPage = () => {
           <button
             type="button"
             onClick={() => setError("")}
-            className="text-red-400 hover:text-red-600"
+            className="text-red-400 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
           >
             <X size={17} />
           </button>
@@ -432,7 +411,7 @@ const EmployeesPage = () => {
 
       {/* Success */}
       {success && (
-        <div className="mb-5 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="mb-5 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-300">
 
           <CheckCircle2
             size={19}
@@ -446,7 +425,7 @@ const EmployeesPage = () => {
           <button
             type="button"
             onClick={() => setSuccess("")}
-            className="text-green-400 hover:text-green-600"
+            className="text-green-400 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
           >
             <X size={17} />
           </button>
@@ -458,21 +437,21 @@ const EmployeesPage = () => {
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
 
         {/* Total */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
           <div className="flex items-center justify-between">
 
             <div>
-              <p className="text-sm font-medium text-gray-500">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 Total Employees
               </p>
 
-              <p className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
                 {pagination.total}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Users size={21} />
             </div>
 
@@ -481,21 +460,21 @@ const EmployeesPage = () => {
         </div>
 
         {/* Active */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
           <div className="flex items-center justify-between">
 
             <div>
-              <p className="text-sm font-medium text-gray-500">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 Active Employees
               </p>
 
-              <p className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
                 {activeEmployees}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-green-50 text-green-600">
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-950/50 dark:text-green-400">
               <UserCheck size={21} />
             </div>
 
@@ -504,21 +483,21 @@ const EmployeesPage = () => {
         </div>
 
         {/* Inactive */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
           <div className="flex items-center justify-between">
 
             <div>
-              <p className="text-sm font-medium text-gray-500">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 Inactive Employees
               </p>
 
-              <p className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
                 {inactiveEmployees}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300">
               <UserX size={21} />
             </div>
 
@@ -548,15 +527,15 @@ const EmployeesPage = () => {
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+        <div className="mt-6 flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Page{" "}
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-gray-900 dark:text-white">
               {pagination.page}
             </span>{" "}
             of{" "}
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-gray-900 dark:text-white">
               {pagination.totalPages}
             </span>
           </p>
@@ -571,7 +550,7 @@ const EmployeesPage = () => {
                   pagination.page - 1
                 )
               }
-              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             >
               Previous
             </button>
@@ -587,7 +566,7 @@ const EmployeesPage = () => {
                   pagination.page + 1
                 )
               }
-              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             >
               Next
             </button>

@@ -38,21 +38,27 @@ function CheckoutPanel({
     });
   };
 
+  const inputClass =
+    "w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500";
+
+  const labelClass =
+    "mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300";
+
   return (
-    <div className="rounded-xl border bg-white shadow-sm">
-      <div className="border-b p-5">
+    <div className="rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+      <div className="border-b p-5 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <CreditCard
             size={20}
-            className="text-blue-600"
+            className="text-blue-600 dark:text-blue-400"
           />
 
           <div>
-            <h2 className="font-semibold text-gray-900">
+            <h2 className="font-semibold text-gray-900 dark:text-white">
               Checkout
             </h2>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Complete the sale.
             </p>
           </div>
@@ -61,7 +67,7 @@ function CheckoutPanel({
 
       <div className="space-y-4 p-5">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-gray-700">
+          <label className={labelClass}>
             Customer Name
           </label>
 
@@ -69,16 +75,18 @@ function CheckoutPanel({
             type="text"
             value={customerName}
             onChange={(event) =>
-              setCustomerName(event.target.value)
+              setCustomerName(
+                event.target.value
+              )
             }
             placeholder="Walk-in Customer"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+            className={inputClass}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+            <label className={labelClass}>
               Discount
             </label>
 
@@ -87,14 +95,16 @@ function CheckoutPanel({
               min="0"
               value={discount}
               onChange={(event) =>
-                setDiscount(event.target.value)
+                setDiscount(
+                  event.target.value
+                )
               }
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+            <label className={labelClass}>
               Tax
             </label>
 
@@ -103,15 +113,17 @@ function CheckoutPanel({
               min="0"
               value={tax}
               onChange={(event) =>
-                setTax(event.target.value)
+                setTax(
+                  event.target.value
+                )
               }
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+              className={inputClass}
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-gray-700">
+          <label className={labelClass}>
             Payment Method
           </label>
 
@@ -122,7 +134,7 @@ function CheckoutPanel({
                 event.target.value
               )
             }
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+            className={inputClass}
           >
             <option value="cash">
               Cash
@@ -138,8 +150,8 @@ function CheckoutPanel({
           </select>
         </div>
 
-        <div className="space-y-3 rounded-lg bg-gray-50 p-4">
-          <div className="flex justify-between text-sm text-gray-600">
+        <div className="space-y-3 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
             <span>Subtotal</span>
 
             <span>
@@ -147,7 +159,7 @@ function CheckoutPanel({
             </span>
           </div>
 
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
             <span>Discount</span>
 
             <span>
@@ -155,7 +167,7 @@ function CheckoutPanel({
             </span>
           </div>
 
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
             <span>Tax</span>
 
             <span>
@@ -163,12 +175,12 @@ function CheckoutPanel({
             </span>
           </div>
 
-          <div className="flex justify-between border-t pt-3">
-            <span className="font-semibold text-gray-900">
+          <div className="flex justify-between border-t border-gray-200 pt-3 dark:border-gray-700">
+            <span className="font-semibold text-gray-900 dark:text-white">
               Grand Total
             </span>
 
-            <span className="text-lg font-bold text-blue-600">
+            <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
               Rs. {grandTotal.toFixed(2)}
             </span>
           </div>

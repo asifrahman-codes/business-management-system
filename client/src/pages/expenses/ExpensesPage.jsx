@@ -231,187 +231,176 @@ const ExpensesPage = () => {
     0
   );
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
-              <Receipt size={24} />
-            </div>
-
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Expenses
-              </h1>
-
-              <p className="text-sm text-gray-500">
-                Manage and track business expenses
-              </p>
-            </div>
+return (
+  <div className="space-y-6">
+    {/* Header */}
+    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div>
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
+            <Receipt size={24} />
           </div>
+
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Expenses
+            </h1>
+
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Manage and track business expenses
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleAdd}
+        className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
+      >
+        <Plus size={18} />
+        Add Expense
+      </button>
+    </div>
+
+    {/* Error */}
+    {error && (
+      <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400">
+        <AlertCircle
+          size={20}
+          className="mt-0.5 shrink-0"
+        />
+
+        <p className="flex-1 text-sm">
+          {error}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => setError("")}
+          className="transition hover:text-red-900 dark:hover:text-red-300"
+        >
+          <X size={18} />
+        </button>
+      </div>
+    )}
+
+    {/* Success */}
+    {message && (
+      <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/40 dark:text-green-400">
+        <span>{message}</span>
+
+        <button
+          type="button"
+          onClick={() => setMessage("")}
+          className="transition hover:text-green-900 dark:hover:text-green-300"
+        >
+          <X size={18} />
+        </button>
+      </div>
+    )}
+
+    {/* Summary */}
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Total Records
+        </p>
+
+        <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
+          {pagination.total}
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Current Page Total
+        </p>
+
+        <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
+          Rs.{" "}
+          {totalAmount.toLocaleString()}
+        </p>
+      </div>
+    </div>
+
+    {/* Filters */}
+    <ExpenseFilters
+      category={filters.category}
+      startDate={filters.startDate}
+      endDate={filters.endDate}
+      onCategoryChange={(value) =>
+        handleFilterChange("category", value)
+      }
+      onStartDateChange={(value) =>
+        handleFilterChange("startDate", value)
+      }
+      onEndDateChange={(value) =>
+        handleFilterChange("endDate", value)
+      }
+      onReset={handleReset}
+    />
+
+    {/* Table */}
+    <ExpensesTable
+      expenses={expenses}
+      loading={loading}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />
+
+    {/* Pagination */}
+    {pagination.totalPages > 1 && (
+      <div className="flex justify-center gap-2">
+        <button
+          type="button"
+          disabled={pagination.page === 1}
+          onClick={() =>
+            handlePageChange(pagination.page - 1)
+          }
+          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+        >
+          Previous
+        </button>
+
+        <div className="flex items-center px-3 text-sm text-gray-600 dark:text-gray-400">
+          Page {pagination.page} of{" "}
+          {pagination.totalPages}
         </div>
 
         <button
           type="button"
-          onClick={handleAdd}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
+          disabled={
+            pagination.page ===
+            pagination.totalPages
+          }
+          onClick={() =>
+            handlePageChange(
+              pagination.page + 1
+            )
+          }
+          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
         >
-          <Plus size={18} />
-          Add Expense
+          Next
         </button>
       </div>
+    )}
 
-      {/* Error */}
-      {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-          <AlertCircle
-            size={20}
-            className="mt-0.5 shrink-0"
-          />
-
-          <p className="flex-1 text-sm">
-            {error}
-          </p>
-
-          <button
-            type="button"
-            onClick={() => setError("")}
-          >
-            <X size={18} />
-          </button>
-        </div>
-      )}
-
-      {/* Success */}
-      {message && (
-        <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-          <span>{message}</span>
-
-          <button
-            type="button"
-            onClick={() => setMessage("")}
-          >
-            <X size={18} />
-          </button>
-        </div>
-      )}
-
-      {/* Summary */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">
-            Total Records
-          </p>
-
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {pagination.total}
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">
-            Current Page Total
-          </p>
-
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            Rs.{" "}
-            {totalAmount.toLocaleString()}
-          </p>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <ExpenseFilters
-        category={filters.category}
-        startDate={filters.startDate}
-        endDate={filters.endDate}
-        onCategoryChange={(value) =>
-          handleFilterChange(
-            "category",
-            value
-          )
+    {/* Form Modal */}
+    <ExpenseFormModal
+      open={modalOpen}
+      expense={selectedExpense}
+      loading={formLoading}
+      onClose={() => {
+        if (!formLoading) {
+          setModalOpen(false);
+          setSelectedExpense(null);
         }
-        onStartDateChange={(value) =>
-          handleFilterChange(
-            "startDate",
-            value
-          )
-        }
-        onEndDateChange={(value) =>
-          handleFilterChange(
-            "endDate",
-            value
-          )
-        }
-        onReset={handleReset}
-      />
-
-      {/* Table */}
-      <ExpensesTable
-        expenses={expenses}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
-
-      {/* Pagination */}
-      {pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <button
-            type="button"
-            disabled={
-              pagination.page === 1
-            }
-            onClick={() =>
-              handlePageChange(
-                pagination.page - 1
-              )
-            }
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Previous
-          </button>
-
-          <div className="flex items-center px-3 text-sm text-gray-600">
-            Page {pagination.page} of{" "}
-            {pagination.totalPages}
-          </div>
-
-          <button
-            type="button"
-            disabled={
-              pagination.page ===
-              pagination.totalPages
-            }
-            onClick={() =>
-              handlePageChange(
-                pagination.page + 1
-              )
-            }
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-      )}
-
-      {/* Form Modal */}
-      <ExpenseFormModal
-        open={modalOpen}
-        expense={selectedExpense}
-        loading={formLoading}
-        onClose={() => {
-          if (!formLoading) {
-            setModalOpen(false);
-            setSelectedExpense(null);
-          }
-        }}
-        onSubmit={handleSubmit}
-      />
-    </div>
-  );
-};
+      }}
+      onSubmit={handleSubmit}
+    />
+  </div>
+);
+}
 
 export default ExpensesPage;

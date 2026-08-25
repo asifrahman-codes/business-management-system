@@ -28,7 +28,7 @@ function ProductFormPage() {
   const [submitError, setSubmitError] = useState("");
 
   const [categories, setCategories] = useState([]);
-const [suppliers, setSuppliers] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
 
   const {
     register,
@@ -61,8 +61,7 @@ const [suppliers, setSuppliers] = useState([]);
       try {
         setLoading(true);
 
-        const response =
-          await getProductById(id);
+        const response = await getProductById(id);
 
         const product = response.data;
 
@@ -70,8 +69,7 @@ const [suppliers, setSuppliers] = useState([]);
           name: product.name || "",
           sku: product.sku || "",
           costPrice: product.costPrice ?? "",
-          sellingPrice:
-            product.sellingPrice ?? "",
+          sellingPrice: product.sellingPrice ?? "",
           quantityInStock:
             product.quantityInStock ?? 0,
           reorderLevel:
@@ -103,31 +101,31 @@ const [suppliers, setSuppliers] = useState([]);
   }, [id, isEditMode, reset]);
 
   useEffect(() => {
-  const fetchFormData = async () => {
-    try {
-      const [
-        categoryResponse,
-        supplierResponse,
-      ] = await Promise.all([
-        getCategories(),
-        getSuppliers({
-          page: 1,
-          limit: 100,
-        }),
-      ]);
+    const fetchFormData = async () => {
+      try {
+        const [
+          categoryResponse,
+          supplierResponse,
+        ] = await Promise.all([
+          getCategories(),
+          getSuppliers({
+            page: 1,
+            limit: 100,
+          }),
+        ]);
 
-      setCategories(categoryResponse.data || []);
-      setSuppliers(supplierResponse.data || []);
-    } catch (error) {
-      setSubmitError(
-        error.response?.data?.message ||
-          "Failed to load categories and suppliers."
-      );
-    }
-  };
+        setCategories(categoryResponse.data || []);
+        setSuppliers(supplierResponse.data || []);
+      } catch (error) {
+        setSubmitError(
+          error.response?.data?.message ||
+            "Failed to load categories and suppliers."
+        );
+      }
+    };
 
-  fetchFormData();
-}, []);
+    fetchFormData();
+  }, []);
 
   const onSubmit = async (formData) => {
     try {
@@ -136,9 +134,7 @@ const [suppliers, setSuppliers] = useState([]);
       const payload = {
         ...formData,
         costPrice: Number(formData.costPrice),
-        sellingPrice: Number(
-          formData.sellingPrice
-        ),
+        sellingPrice: Number(formData.sellingPrice),
         quantityInStock: Number(
           formData.quantityInStock
         ),
@@ -171,13 +167,13 @@ const [suppliers, setSuppliers] = useState([]);
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           {isEditMode
             ? "Edit Product"
             : "Add Product"}
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           {isEditMode
             ? "Update product information."
             : "Add a new product to your inventory."}
@@ -192,7 +188,7 @@ const [suppliers, setSuppliers] = useState([]);
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-xl border bg-white p-6 shadow-sm"
+        className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
       >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormField
@@ -245,9 +241,7 @@ const [suppliers, setSuppliers] = useState([]);
 
           <FormField
             label="Quantity in Stock"
-            error={
-              errors.quantityInStock?.message
-            }
+            error={errors.quantityInStock?.message}
           >
             <input
               {...register("quantityInStock")}
@@ -290,57 +284,57 @@ const [suppliers, setSuppliers] = useState([]);
           </FormField>
 
           <FormField
-  label="Category"
-  error={errors.category?.message}
->
-  <select
-    {...register("category")}
-    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
-  >
-    <option value="">
-      Select category
-    </option>
+            label="Category"
+            error={errors.category?.message}
+          >
+            <select
+              {...register("category")}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+            >
+              <option value="">
+                Select category
+              </option>
 
-    {categories.map((category) => (
-      <option
-        key={category._id}
-        value={category._id}
-      >
-        {category.name}
-      </option>
-    ))}
-  </select>
-</FormField>
+              {categories.map((category) => (
+                <option
+                  key={category._id}
+                  value={category._id}
+                >
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </FormField>
 
           <FormField
-  label="Supplier"
-  error={errors.supplier?.message}
->
-  <select
-    {...register("supplier")}
-    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500"
-  >
-    <option value="">
-      Select supplier
-    </option>
+            label="Supplier"
+            error={errors.supplier?.message}
+          >
+            <select
+              {...register("supplier")}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+            >
+              <option value="">
+                Select supplier
+              </option>
 
-    {suppliers.map((supplier) => (
-      <option
-        key={supplier._id}
-        value={supplier._id}
-      >
-        {supplier.name}
-      </option>
-    ))}
-  </select>
-</FormField>
+              {suppliers.map((supplier) => (
+                <option
+                  key={supplier._id}
+                  value={supplier._id}
+                >
+                  {supplier.name}
+                </option>
+              ))}
+            </select>
+          </FormField>
         </div>
 
         <div className="mt-8 flex justify-end gap-3">
           <button
             type="button"
             onClick={() => navigate("/products")}
-            className="rounded-lg border px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             Cancel
           </button>
@@ -369,14 +363,14 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-gray-700">
+      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200">
         {label}
       </label>
 
       {children}
 
       {error && (
-        <p className="mt-1 text-sm text-red-600">
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
           {error}
         </p>
       )}

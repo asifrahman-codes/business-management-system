@@ -85,14 +85,7 @@ function ProductsPage() {
 
       await deleteProduct(id);
 
-      /*
-       * If the deleted product was the last item
-       * on the current page, move to the previous page.
-       */
-      if (
-        products.length === 1 &&
-        page > 1
-      ) {
+      if (products.length === 1 && page > 1) {
         setPage((currentPage) => currentPage - 1);
         return;
       }
@@ -111,9 +104,7 @@ function ProductsPage() {
       return "-";
     }
 
-    return new Date(
-      expiryDate
-    ).toLocaleDateString();
+    return new Date(expiryDate).toLocaleDateString();
   };
 
   if (loading) {
@@ -125,11 +116,11 @@ function ProductsPage() {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Products
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Manage your products and pricing.
           </p>
         </div>
@@ -155,7 +146,7 @@ function ProductsPage() {
         onSubmit={handleSearch}
         className="mb-5 flex flex-col gap-3 sm:flex-row"
       >
-        <div className="flex flex-1 items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 shadow-sm">
+        <div className="flex flex-1 items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <Search
             size={19}
             className="shrink-0 text-gray-400"
@@ -168,13 +159,13 @@ function ProductsPage() {
               setSearch(event.target.value)
             }
             placeholder="Search by product name or SKU..."
-            className="w-full bg-transparent py-3 text-sm text-gray-900 outline-none placeholder:text-gray-400"
+            className="w-full bg-transparent py-3 text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100"
           />
         </div>
 
         <button
           type="submit"
-          className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
+          className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
         >
           Search
         </button>
@@ -183,7 +174,7 @@ function ProductsPage() {
           <button
             type="button"
             onClick={handleClearSearch}
-            className="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             Clear
           </button>
@@ -201,85 +192,83 @@ function ProductsPage() {
           }
         />
       ) : (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
           {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px]">
-              <thead className="border-b border-gray-200 bg-gray-50">
+              <thead className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
                 <tr>
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Product
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     SKU
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Category
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Supplier
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Selling Price
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Stock
                   </th>
 
-                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Expiry
                   </th>
 
-                  <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600">
+                  <th className="px-5 py-4 text-right text-sm font-semibold text-gray-600 dark:text-gray-200">
                     Actions
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {products.map((product) => (
                   <tr
                     key={product._id}
-                    className="transition hover:bg-gray-50"
+                    className="transition hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     {/* Product */}
                     <td className="px-5 py-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                           {product.name}
                         </p>
 
-                        <p className="mt-0.5 text-xs text-gray-400">
+                        <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                           Unit: {product.unit}
                         </p>
                       </div>
                     </td>
 
                     {/* SKU */}
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                       {product.sku}
                     </td>
 
                     {/* Category */}
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                       {product.category?.name || "-"}
                     </td>
 
                     {/* Supplier */}
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                       {product.supplier?.name || "-"}
                     </td>
 
                     {/* Selling Price */}
-                    <td className="px-5 py-4 text-sm font-medium text-gray-900">
-                      {formatCurrency(
-                        product.sellingPrice
-                      )}
+                    <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {formatCurrency(product.sellingPrice)}
                     </td>
 
                     {/* Stock */}
@@ -288,8 +277,8 @@ function ProductsPage() {
                         className={
                           product.quantityInStock <=
                           product.reorderLevel
-                            ? "text-sm font-medium text-red-600"
-                            : "text-sm text-gray-600"
+                            ? "text-sm font-medium text-red-600 dark:text-red-400"
+                            : "text-sm text-gray-600 dark:text-gray-300"
                         }
                       >
                         {product.quantityInStock}{" "}
@@ -298,10 +287,8 @@ function ProductsPage() {
                     </td>
 
                     {/* Expiry */}
-                    <td className="px-5 py-4 text-sm text-gray-600">
-                      {formatExpiryDate(
-                        product.expiryDate
-                      )}
+                    <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
+                      {formatExpiryDate(product.expiryDate)}
                     </td>
 
                     {/* Actions */}
@@ -309,14 +296,14 @@ function ProductsPage() {
                       <div className="flex justify-end gap-2">
                         <Link
                           to={`/products/${product._id}`}
-                          className="rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                          className="rounded-md px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950"
                         >
                           View
                         </Link>
 
                         <Link
                           to={`/products/${product._id}/edit`}
-                          className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+                          className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                         >
                           Edit
                         </Link>
@@ -324,11 +311,9 @@ function ProductsPage() {
                         <button
                           type="button"
                           onClick={() =>
-                            handleDelete(
-                              product._id
-                            )
+                            handleDelete(product._id)
                           }
-                          className="rounded-md px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                          className="rounded-md px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
                         >
                           Delete
                         </button>
@@ -343,20 +328,20 @@ function ProductsPage() {
           {/* Pagination */}
           {pagination &&
             pagination.totalPages > 0 && (
-              <div className="flex flex-col gap-3 border-t border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 border-t border-gray-200 px-5 py-4 dark:border-gray-700 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Showing page{" "}
-                    <span className="font-medium text-gray-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-200">
                       {pagination.page}
                     </span>{" "}
                     of{" "}
-                    <span className="font-medium text-gray-700">
+                    <span className="font-medium text-gray-700 dark:text-gray-200">
                       {pagination.totalPages}
                     </span>
                   </p>
 
-                  <p className="mt-0.5 text-xs text-gray-400">
+                  <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                     {pagination.total}{" "}
                     {pagination.total === 1
                       ? "product"
@@ -375,7 +360,7 @@ function ProductsPage() {
                           currentPage - 1
                       )
                     }
-                    className="rounded-lg border border-gray-300 bg-white p-2 text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-lg border border-gray-300 bg-white p-2 text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                     aria-label="Previous page"
                   >
                     <ChevronLeft size={18} />
@@ -384,8 +369,7 @@ function ProductsPage() {
                   <button
                     type="button"
                     disabled={
-                      page >=
-                      pagination.totalPages
+                      page >= pagination.totalPages
                     }
                     onClick={() =>
                       setPage(
@@ -393,7 +377,7 @@ function ProductsPage() {
                           currentPage + 1
                       )
                     }
-                    className="rounded-lg border border-gray-300 bg-white p-2 text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-lg border border-gray-300 bg-white p-2 text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                     aria-label="Next page"
                   >
                     <ChevronRight size={18} />

@@ -5,7 +5,9 @@ import {
   Search,
 } from "lucide-react";
 
-import { getInventoryTransactions } from "../../services/inventoryService";
+import {
+  getInventoryTransactions,
+} from "../../services/inventoryService";
 
 import PageContainer from "../../components/ui/PageContainer";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
@@ -13,7 +15,9 @@ import ErrorMessage from "../../components/common/ErrorMessage";
 import EmptyState from "../../components/common/EmptyState";
 
 function InventoryTransactionsPage() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] =
+    useState([]);
+
   const [pagination, setPagination] =
     useState(null);
 
@@ -21,7 +25,9 @@ function InventoryTransactionsPage() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
+
   const [error, setError] = useState("");
 
   const fetchTransactions = async () => {
@@ -68,33 +74,44 @@ function InventoryTransactionsPage() {
     setPage(1);
   };
 
-  const getTypeClassName = (transactionType) => {
+  const getTypeClassName = (
+    transactionType
+  ) => {
     const typeClasses = {
-      SALE: "bg-red-100 text-red-700",
-      RETURN: "bg-green-100 text-green-700",
-      PURCHASE: "bg-blue-100 text-blue-700",
+      SALE:
+        "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400",
+
+      RETURN:
+        "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400",
+
+      PURCHASE:
+        "bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
+
       ADJUSTMENT:
-        "bg-yellow-100 text-yellow-700",
+        "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/50 dark:text-yellow-400",
     };
 
     return (
       typeClasses[transactionType] ||
-      "bg-gray-100 text-gray-700"
+      "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
     );
   };
 
-  if (loading && transactions.length === 0) {
+  if (
+    loading &&
+    transactions.length === 0
+  ) {
     return <LoadingSpinner />;
   }
 
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Inventory Transactions
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Track all product stock movements.
         </p>
       </div>
@@ -105,8 +122,8 @@ function InventoryTransactionsPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-        <div className="flex flex-col gap-4 border-b p-5 lg:flex-row lg:items-center lg:justify-between">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <div className="flex flex-col gap-4 border-b border-gray-200 p-5 dark:border-gray-700 lg:flex-row lg:items-center lg:justify-between">
           <div className="relative w-full lg:w-80">
             <Search
               size={18}
@@ -118,14 +135,14 @@ function InventoryTransactionsPage() {
               value={search}
               onChange={handleSearchChange}
               placeholder="Search product..."
-              className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500"
+              className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
             />
           </div>
 
           <select
             value={type}
             onChange={handleTypeChange}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-blue-500"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
           >
             <option value="">
               All Transaction Types
@@ -160,62 +177,62 @@ function InventoryTransactionsPage() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1200px]">
-                <thead className="border-b bg-gray-50">
+                <thead className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                   <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Date
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Product
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Type
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Quantity
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Previous Stock
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       New Stock
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Performed By
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Note
                     </th>
                   </tr>
                 </thead>
 
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {transactions.map(
                     (transaction) => (
                       <tr
                         key={transaction._id}
-                        className="hover:bg-gray-50"
+                        className="hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
-                        <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-600">
+                        <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                           {new Date(
                             transaction.createdAt
                           ).toLocaleString()}
                         </td>
 
                         <td className="px-5 py-4">
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
                             {transaction.product
                               ?.name || "-"}
                           </p>
 
-                          <p className="mt-1 text-xs text-gray-500">
+                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {transaction.product
                               ?.sku || "-"}
                           </p>
@@ -231,34 +248,38 @@ function InventoryTransactionsPage() {
                           </span>
                         </td>
 
-                        <td className="px-5 py-4 text-sm font-medium text-gray-900">
+                        <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {transaction.quantity}{" "}
                           {transaction.product
                             ?.unit || ""}
                         </td>
 
-                        <td className="px-5 py-4 text-sm text-gray-600">
+                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                           {transaction.previousStock}
                         </td>
 
-                        <td className="px-5 py-4 text-sm font-medium text-gray-900">
+                        <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {transaction.newStock}
                         </td>
 
                         <td className="px-5 py-4">
-                          <p className="text-sm text-gray-900">
-                            {transaction.performedBy
-                              ?.name || "System"}
+                          <p className="text-sm text-gray-900 dark:text-white">
+                            {transaction
+                              .performedBy
+                              ?.name ||
+                              "System"}
                           </p>
 
-                          <p className="mt-1 text-xs text-gray-500">
-                            {transaction.performedBy
+                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {transaction
+                              .performedBy
                               ?.email || ""}
                           </p>
                         </td>
 
-                        <td className="max-w-xs px-5 py-4 text-sm text-gray-600">
-                          {transaction.note || "-"}
+                        <td className="max-w-xs px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
+                          {transaction.note ||
+                            "-"}
                         </td>
                       </tr>
                     )
@@ -268,8 +289,8 @@ function InventoryTransactionsPage() {
             </div>
 
             {pagination && (
-              <div className="flex flex-col gap-4 border-t px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-gray-500">
+              <div className="flex flex-col gap-4 border-t border-gray-200 px-5 py-4 dark:border-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Page {pagination.page} of{" "}
                   {pagination.totalPages} (
                   {pagination.total} transactions)
@@ -285,7 +306,7 @@ function InventoryTransactionsPage() {
                           currentPage - 1
                       )
                     }
-                    className="rounded-lg border p-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-lg border border-gray-300 p-2 text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                   >
                     <ChevronLeft size={18} />
                   </button>
@@ -302,7 +323,7 @@ function InventoryTransactionsPage() {
                           currentPage + 1
                       )
                     }
-                    className="rounded-lg border p-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-lg border border-gray-300 p-2 text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                   >
                     <ChevronRight size={18} />
                   </button>

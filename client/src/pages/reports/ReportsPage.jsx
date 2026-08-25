@@ -48,26 +48,26 @@ const StatCard = ({
   description,
 }) => {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             {title}
           </p>
 
-          <h3 className="mt-2 text-2xl font-bold text-gray-900">
+          <h3 className="mt-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
             {value}
           </h3>
 
           {description && (
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               {description}
             </p>
           )}
         </div>
 
-        <div className="rounded-lg bg-gray-100 p-3">
-          <Icon className="h-5 w-5 text-gray-700" />
+        <div className="rounded-lg bg-gray-100 p-3 dark:bg-gray-700">
+          <Icon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ const StatCard = ({
 const LoadingState = () => {
   return (
     <div className="flex min-h-[300px] items-center justify-center">
-      <div className="flex items-center gap-3 text-gray-500">
+      <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
         <RefreshCw className="h-5 w-5 animate-spin" />
         <span>Loading report...</span>
       </div>
@@ -87,7 +87,7 @@ const LoadingState = () => {
 
 const EmptyState = ({ message }) => {
   return (
-    <div className="py-10 text-center text-sm text-gray-500">
+    <div className="py-10 text-center text-sm text-gray-500 dark:text-gray-400">
       {message}
     </div>
   );
@@ -210,11 +210,11 @@ const ReportsPage = () => {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Reports
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             View sales, expenses, profit and inventory
             performance.
           </p>
@@ -222,13 +222,13 @@ const ReportsPage = () => {
       </div>
 
       {/* Date Filters */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <form
           onSubmit={handleFilter}
           className="flex flex-col gap-4 lg:flex-row lg:items-end"
         >
           <div className="flex-1">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Start Date
             </label>
 
@@ -241,13 +241,13 @@ const ReportsPage = () => {
                 onChange={(e) =>
                   setStartDate(e.target.value)
                 }
-                className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-gray-400"
               />
             </div>
           </div>
 
           <div className="flex-1">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
               End Date
             </label>
 
@@ -260,7 +260,7 @@ const ReportsPage = () => {
                 onChange={(e) =>
                   setEndDate(e.target.value)
                 }
-                className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-900 outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-gray-400"
               />
             </div>
           </div>
@@ -268,7 +268,7 @@ const ReportsPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
           >
             <BarChart3 className="h-4 w-4" />
 
@@ -279,7 +279,7 @@ const ReportsPage = () => {
         </form>
 
         {error && (
-          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
             {error}
           </div>
         )}
@@ -291,7 +291,7 @@ const ReportsPage = () => {
         <>
           {/* Profit Summary */}
           <div>
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
               Financial Summary
             </h2>
 
@@ -345,58 +345,52 @@ const ReportsPage = () => {
           {/* Sales + Expenses */}
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Sales Report */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div className="border-b border-gray-200 px-5 py-4">
-                <h2 className="font-semibold text-gray-900">
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <div className="border-b border-gray-200 px-5 py-4 dark:border-gray-700">
+                <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                   Sales Report
                 </h2>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Sales for selected date range
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 p-5">
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">
-                    Total Sales
-                  </p>
+                {[
+                  ["Total Sales", salesReport?.totalSales],
+                  ["Total Cost", salesReport?.totalCost],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700/50"
+                  >
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {label}
+                    </p>
 
-                  <p className="mt-1 text-xl font-bold text-gray-900">
-                    {formatCurrency(
-                      salesReport?.totalSales
-                    )}
-                  </p>
-                </div>
+                    <p className="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
+                      {formatCurrency(value)}
+                    </p>
+                  </div>
+                ))}
 
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">
-                    Total Cost
-                  </p>
-
-                  <p className="mt-1 text-xl font-bold text-gray-900">
-                    {formatCurrency(
-                      salesReport?.totalCost
-                    )}
-                  </p>
-                </div>
-
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">
+                <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700/50">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Number of Sales
                   </p>
 
-                  <p className="mt-1 text-xl font-bold text-gray-900">
+                  <p className="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
                     {salesReport?.numberOfSales ?? 0}
                   </p>
                 </div>
 
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">
+                <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700/50">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Profit
                   </p>
 
-                  <p className="mt-1 text-xl font-bold text-gray-900">
+                  <p className="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">
                     {formatCurrency(
                       Number(
                         salesReport?.totalSales || 0
@@ -411,24 +405,24 @@ const ReportsPage = () => {
             </div>
 
             {/* Expense Report */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div className="border-b border-gray-200 px-5 py-4">
-                <h2 className="font-semibold text-gray-900">
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <div className="border-b border-gray-200 px-5 py-4 dark:border-gray-700">
+                <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                   Expense Report
                 </h2>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Expenses for selected date range
                 </p>
               </div>
 
               <div className="p-5">
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">
+                <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700/50">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Total Expenses
                   </p>
 
-                  <p className="mt-1 text-2xl font-bold text-gray-900">
+                  <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
                     {formatCurrency(
                       expenseReport?.totalExpenses
                     )}
@@ -436,7 +430,7 @@ const ReportsPage = () => {
                 </div>
 
                 <div className="mt-5">
-                  <h3 className="mb-3 text-sm font-semibold text-gray-900">
+                  <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">
                     Expenses by Category
                   </h3>
 
@@ -449,13 +443,13 @@ const ReportsPage = () => {
                             key={
                               item._id || index
                             }
-                            className="flex items-center justify-between rounded-lg border border-gray-100 px-3 py-2"
+                            className="flex items-center justify-between rounded-lg border border-gray-100 px-3 py-2 dark:border-gray-700"
                           >
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-gray-600 dark:text-gray-300">
                               {item._id}
                             </span>
 
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                               {formatCurrency(
                                 item.total ||
                                   item.amount ||
@@ -475,9 +469,9 @@ const ReportsPage = () => {
           </div>
 
           {/* Profit Details */}
-          <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-200 px-5 py-4">
-              <h2 className="font-semibold text-gray-900">
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div className="border-b border-gray-200 px-5 py-4 dark:border-gray-700">
+              <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                 Profit Details
               </h2>
             </div>
@@ -508,14 +502,14 @@ const ReportsPage = () => {
           </div>
 
           {/* Monthly Report */}
-          <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div className="flex flex-col gap-3 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div className="flex flex-col gap-3 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700">
               <div>
-                <h2 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                   Monthly Report
                 </h2>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Monthly performance
                 </p>
               </div>
@@ -527,7 +521,7 @@ const ReportsPage = () => {
                     Number(e.target.value)
                   )
                 }
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-500"
+                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 {Array.from(
                   { length: 5 },
@@ -547,92 +541,68 @@ const ReportsPage = () => {
 
             <div className="overflow-x-auto">
               <table className="min-w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-gray-700/50">
                   <tr>
-                    <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Month
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Sales
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Cost
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Gross Profit
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Expenses
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Net Profit
-                    </th>
-
-                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Sales Count
-                    </th>
+                    {[
+                      "Month",
+                      "Sales",
+                      "Cost",
+                      "Gross Profit",
+                      "Expenses",
+                      "Net Profit",
+                      "Sales Count",
+                    ].map((heading) => (
+                      <th
+                        key={heading}
+                        className={`px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 ${
+                          heading === "Month"
+                            ? "text-left"
+                            : "text-right"
+                        }`}
+                      >
+                        {heading}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                   {monthlyReport.length ? (
                     monthlyReport.map((item) => (
                       <tr
                         key={item.month}
-                        className="hover:bg-gray-50"
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700/40"
                       >
-                        <td className="px-5 py-4 text-sm font-medium text-gray-900">
-                          {formatMonth(
-                            item.month
-                          )}
+                        <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                          {formatMonth(item.month)}
                         </td>
 
-                        <td className="px-5 py-4 text-right text-sm text-gray-700">
-                          {formatCurrency(
-                            item.sales
-                          )}
-                        </td>
-
-                        <td className="px-5 py-4 text-right text-sm text-gray-700">
-                          {formatCurrency(
-                            item.costOfGoods
-                          )}
-                        </td>
-
-                        <td className="px-5 py-4 text-right text-sm text-gray-700">
-                          {formatCurrency(
-                            item.grossProfit
-                          )}
-                        </td>
-
-                        <td className="px-5 py-4 text-right text-sm text-gray-700">
-                          {formatCurrency(
-                            item.expenses
-                          )}
-                        </td>
+                        {[
+                          item.sales,
+                          item.costOfGoods,
+                          item.grossProfit,
+                          item.expenses,
+                        ].map((value, index) => (
+                          <td
+                            key={index}
+                            className="px-5 py-4 text-right text-sm text-gray-700 dark:text-gray-300"
+                          >
+                            {formatCurrency(value)}
+                          </td>
+                        ))}
 
                         <td
                           className={`px-5 py-4 text-right text-sm font-semibold ${
-                            Number(
-                              item.netProfit
-                            ) >= 0
-                              ? "text-green-600"
-                              : "text-red-600"
+                            Number(item.netProfit) >= 0
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
                           }`}
                         >
-                          {formatCurrency(
-                            item.netProfit
-                          )}
+                          {formatCurrency(item.netProfit)}
                         </td>
 
-                        <td className="px-5 py-4 text-right text-sm text-gray-700">
-                          {item.numberOfSales ??
-                            0}
+                        <td className="px-5 py-4 text-right text-sm text-gray-700 dark:text-gray-300">
+                          {item.numberOfSales ?? 0}
                         </td>
                       </tr>
                     ))
@@ -640,7 +610,7 @@ const ReportsPage = () => {
                     <tr>
                       <td
                         colSpan="7"
-                        className="px-5 py-10 text-center text-sm text-gray-500"
+                        className="px-5 py-10 text-center text-sm text-gray-500 dark:text-gray-400"
                       >
                         No monthly data available.
                       </td>
@@ -654,56 +624,54 @@ const ReportsPage = () => {
           {/* Inventory Report */}
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Low Stock */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-700">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-gray-100 p-2">
-                    <AlertTriangle className="h-5 w-5 text-gray-700" />
+                  <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-700">
+                    <AlertTriangle className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </div>
 
                   <div>
-                    <h2 className="font-semibold text-gray-900">
+                    <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                       Low Stock
                     </h2>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       Products requiring restock
                     </p>
                   </div>
                 </div>
 
-                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800">
-                  {inventoryReport?.lowStock
-                    ?.count ?? 0}
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                  {inventoryReport?.lowStock?.count ?? 0}
                 </span>
               </div>
 
               <div className="p-5">
-                {inventoryReport?.lowStock
-                  ?.products?.length ? (
+                {inventoryReport?.lowStock?.products?.length ? (
                   <div className="space-y-3">
                     {inventoryReport.lowStock.products.map(
                       (product) => (
                         <div
                           key={product._id}
-                          className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
+                          className="flex items-center justify-between rounded-lg border border-gray-100 p-3 dark:border-gray-700"
                         >
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                               {product.name}
                             </p>
 
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               SKU: {product.sku}
                             </p>
                           </div>
 
                           <div className="text-right">
-                            <p className="text-sm font-semibold text-red-600">
+                            <p className="text-sm font-semibold text-red-600 dark:text-red-400">
                               {product.quantityInStock}
                             </p>
 
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               In stock
                             </p>
                           </div>
@@ -718,52 +686,50 @@ const ReportsPage = () => {
             </div>
 
             {/* Expiring */}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-700">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-gray-100 p-2">
-                    <Clock className="h-5 w-5 text-gray-700" />
+                  <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-700">
+                    <Clock className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </div>
 
                   <div>
-                    <h2 className="font-semibold text-gray-900">
+                    <h2 className="font-semibold text-gray-900 dark:text-gray-100">
                       Expiring Soon
                     </h2>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       Products expiring within 30 days
                     </p>
                   </div>
                 </div>
 
-                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800">
-                  {inventoryReport?.expiring
-                    ?.count ?? 0}
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                  {inventoryReport?.expiring?.count ?? 0}
                 </span>
               </div>
 
               <div className="p-5">
-                {inventoryReport?.expiring
-                  ?.products?.length ? (
+                {inventoryReport?.expiring?.products?.length ? (
                   <div className="space-y-3">
                     {inventoryReport.expiring.products.map(
                       (product) => (
                         <div
                           key={product._id}
-                          className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
+                          className="flex items-center justify-between rounded-lg border border-gray-100 p-3 dark:border-gray-700"
                         >
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                               {product.name}
                             </p>
 
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               SKU: {product.sku}
                             </p>
                           </div>
 
                           <div className="text-right">
-                            <p className="text-sm font-semibold text-orange-600">
+                            <p className="text-sm font-semibold text-orange-600 dark:text-orange-400">
                               {product.expiryDate
                                 ? new Date(
                                     product.expiryDate
@@ -771,7 +737,7 @@ const ReportsPage = () => {
                                 : "-"}
                             </p>
 
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               Expiry date
                             </p>
                           </div>

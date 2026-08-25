@@ -129,7 +129,7 @@ const SupplierFormPage = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center text-gray-500">
+      <div className="flex min-h-[300px] items-center justify-center text-gray-500 dark:text-gray-400">
         Loading supplier...
       </div>
     );
@@ -144,19 +144,19 @@ const SupplierFormPage = () => {
           onClick={() =>
             navigate("/suppliers")
           }
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
         >
           <ArrowLeft size={18} />
           Back to Suppliers
         </button>
 
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           {isEditMode
             ? "Edit Supplier"
             : "Add Supplier"}
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           {isEditMode
             ? "Update supplier information."
             : "Add a new supplier to your business."}
@@ -165,7 +165,7 @@ const SupplierFormPage = () => {
 
       {/* Error */}
       {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
           <AlertCircle
             size={20}
             className="mt-0.5 shrink-0"
@@ -188,12 +188,12 @@ const SupplierFormPage = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl rounded-xl border border-gray-200 bg-white shadow-sm"
+        className="max-w-3xl rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
       >
         <div className="space-y-5 p-6">
           {/* Name */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Supplier Name
             </label>
 
@@ -207,13 +207,13 @@ const SupplierFormPage = () => {
               minLength={2}
               maxLength={100}
               placeholder="e.g. ABC Distributors"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/30"
             />
           </div>
 
           {/* Contact Person */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Contact Person
             </label>
 
@@ -227,13 +227,13 @@ const SupplierFormPage = () => {
               )}
               maxLength={100}
               placeholder="e.g. Muhammad Ali"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/30"
             />
           </div>
 
           {/* Phone */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Phone
             </label>
 
@@ -245,13 +245,13 @@ const SupplierFormPage = () => {
               )}
               maxLength={20}
               placeholder="e.g. 03001234567"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/30"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Email
             </label>
 
@@ -263,13 +263,13 @@ const SupplierFormPage = () => {
               )}
               maxLength={100}
               placeholder="e.g. supplier@example.com"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/30"
             />
           </div>
 
           {/* Address */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Address
             </label>
 
@@ -281,20 +281,20 @@ const SupplierFormPage = () => {
               maxLength={500}
               rows={4}
               placeholder="Supplier address"
-              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full resize-none rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/30"
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-3 border-t border-gray-200 px-6 py-4">
+        <div className="flex justify-end gap-3 border-t border-gray-200 px-6 py-4 dark:border-gray-700">
           <button
             type="button"
             onClick={() =>
               navigate("/suppliers")
             }
             disabled={submitting}
-            className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             Cancel
           </button>

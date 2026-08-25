@@ -42,9 +42,12 @@ function PosPage() {
   const fetchProducts = async () => {
     try {
       setLoadingProducts(true);
+      setError("");
 
       const response =
-        await searchProductsForPos(search);
+        await saleService.searchProductsForPos(
+          search
+        );
 
       setProducts(response.data || []);
     } catch (error) {
@@ -186,7 +189,9 @@ function PosPage() {
       };
 
       const response =
-        await createSale(saleData);
+        await saleService.createSale(
+          saleData
+        );
 
       setSuccessMessage(
         `Sale completed successfully. Invoice: ${response.data.invoiceNumber}`
@@ -208,24 +213,24 @@ function PosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Point of Sale
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Search products, manage the cart, and
           complete customer sales.
         </p>
       </div>
 
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400">
           {error}
         </div>
       )}
 
       {successMessage && (
-        <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/40 dark:text-green-400">
           {successMessage}
         </div>
       )}

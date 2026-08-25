@@ -26,8 +26,7 @@ function ProductDetailsPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response =
-          await getProductById(id);
+        const response = await getProductById(id);
 
         setProduct(response.data);
       } catch (error) {
@@ -82,11 +81,11 @@ function ProductDetailsPage() {
     <PageContainer>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {product.name}
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Product details
           </p>
         </div>
@@ -122,16 +121,12 @@ function ProductDetailsPage() {
 
         <Detail
           label="Cost Price"
-          value={formatCurrency(
-            product.costPrice
-          )}
+          value={formatCurrency(product.costPrice)}
         />
 
         <Detail
           label="Selling Price"
-          value={formatCurrency(
-            product.sellingPrice
-          )}
+          value={formatCurrency(product.sellingPrice)}
         />
 
         <Detail
@@ -184,12 +179,12 @@ function ProductDetailsPage() {
 
 function Detail({ label, value }) {
   return (
-    <div className="rounded-xl border bg-white p-5 shadow-sm">
-      <p className="text-sm text-gray-500">
+    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <p className="text-sm text-gray-500 dark:text-gray-400">
         {label}
       </p>
 
-      <p className="mt-1 font-medium text-gray-900">
+      <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
         {value}
       </p>
     </div>

@@ -36,7 +36,7 @@ function InventoryPage() {
       return {
         label: "Out of Stock",
         className:
-          "bg-red-100 text-red-700",
+          "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400",
       };
     }
 
@@ -44,14 +44,14 @@ function InventoryPage() {
       return {
         label: "Low Stock",
         className:
-          "bg-yellow-100 text-yellow-700",
+          "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/50 dark:text-yellow-400",
       };
     }
 
     return {
       label: "In Stock",
       className:
-        "bg-green-100 text-green-700",
+        "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400",
     };
   };
 
@@ -60,7 +60,7 @@ function InventoryPage() {
       return {
         label: "No Expiry",
         className:
-          "bg-gray-100 text-gray-600",
+          "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400",
       };
     }
 
@@ -74,13 +74,12 @@ function InventoryPage() {
       return {
         label: "Expired",
         className:
-          "bg-red-100 text-red-700",
+          "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400",
       };
     }
 
     const difference =
-      expiry.getTime() -
-      today.getTime();
+      expiry.getTime() - today.getTime();
 
     const daysRemaining = Math.ceil(
       difference / (1000 * 60 * 60 * 24)
@@ -90,14 +89,14 @@ function InventoryPage() {
       return {
         label: "Expiring Soon",
         className:
-          "bg-yellow-100 text-yellow-700",
+          "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/50 dark:text-yellow-400",
       };
     }
 
     return {
       label: "Valid",
       className:
-        "bg-green-100 text-green-700",
+        "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400",
     };
   };
 
@@ -153,11 +152,11 @@ function InventoryPage() {
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Inventory
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Monitor product stock levels and expiry
           status.
         </p>
@@ -174,40 +173,40 @@ function InventoryPage() {
           title="Total Products"
           value={summary?.totalProducts}
           icon={Package}
-          iconClassName="bg-blue-100 text-blue-600"
+          iconClassName="bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400"
         />
 
         <InventoryStatCard
           title="Low Stock Products"
           value={summary?.lowStockProducts}
           icon={AlertTriangle}
-          iconClassName="bg-yellow-100 text-yellow-600"
+          iconClassName="bg-yellow-100 text-yellow-600 dark:bg-yellow-950/50 dark:text-yellow-400"
         />
 
         <InventoryStatCard
           title="Expired Products"
           value={summary?.expiredProducts}
           icon={XCircle}
-          iconClassName="bg-red-100 text-red-600"
+          iconClassName="bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400"
         />
 
         <InventoryStatCard
           title="Expiring Soon"
           value={summary?.expiringSoonProducts}
           icon={CalendarClock}
-          iconClassName="bg-orange-100 text-orange-600"
+          iconClassName="bg-orange-100 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400"
         />
       </div>
 
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-        <div className="border-b p-5">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <div className="border-b border-gray-200 p-5 dark:border-gray-700">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Product Inventory
               </h2>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 View current stock and expiry status.
               </p>
             </div>
@@ -223,7 +222,7 @@ function InventoryPage() {
                 value={search}
                 onChange={handleSearchChange}
                 placeholder="Search products..."
-                className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500"
+                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
               />
             </div>
           </div>
@@ -240,43 +239,43 @@ function InventoryPage() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1000px]">
-                <thead className="border-b bg-gray-50">
+                <thead className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                   <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Product
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       SKU
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Category
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Current Stock
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Reorder Level
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Stock Status
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Expiry Date
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">
                       Expiry Status
                     </th>
                   </tr>
                 </thead>
 
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {products.map((product) => {
                     const stockStatus =
                       getStockStatus(
@@ -292,35 +291,34 @@ function InventoryPage() {
                     return (
                       <tr
                         key={product._id}
-                        className="hover:bg-gray-50"
+                        className="hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="rounded-lg bg-blue-50 p-2 text-blue-600">
+                            <div className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
                               <Archive size={18} />
                             </div>
 
-                            <span className="text-sm font-medium text-gray-900">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">
                               {product.name}
                             </span>
                           </div>
                         </td>
 
-                        <td className="px-5 py-4 text-sm text-gray-600">
+                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                           {product.sku}
                         </td>
 
-                        <td className="px-5 py-4 text-sm text-gray-600">
-                          {product.category?.name ||
-                            "-"}
+                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
+                          {product.category?.name || "-"}
                         </td>
 
-                        <td className="px-5 py-4 text-sm font-medium text-gray-900">
+                        <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {product.quantityInStock}{" "}
                           {product.unit}
                         </td>
 
-                        <td className="px-5 py-4 text-sm text-gray-600">
+                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                           {product.reorderLevel}{" "}
                           {product.unit}
                         </td>
@@ -333,7 +331,7 @@ function InventoryPage() {
                           </span>
                         </td>
 
-                        <td className="px-5 py-4 text-sm text-gray-600">
+                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-300">
                           {product.expiryDate
                             ? new Date(
                                 product.expiryDate
@@ -356,8 +354,8 @@ function InventoryPage() {
             </div>
 
             {pagination && (
-              <div className="flex flex-col gap-4 border-t px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-gray-500">
+              <div className="flex flex-col gap-4 border-t border-gray-200 px-5 py-4 dark:border-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Page {pagination.page} of{" "}
                   {pagination.totalPages} (
                   {pagination.total} products)
@@ -373,7 +371,7 @@ function InventoryPage() {
                           currentPage - 1
                       )
                     }
-                    className="rounded-lg border px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                   >
                     Previous
                   </button>
@@ -390,7 +388,7 @@ function InventoryPage() {
                           currentPage + 1
                       )
                     }
-                    className="rounded-lg border px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                   >
                     Next
                   </button>

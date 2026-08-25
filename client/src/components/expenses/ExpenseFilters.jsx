@@ -22,10 +22,10 @@ const ExpenseFilters = ({
   onReset,
 }) => {
   return (
-    <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Category
           </label>
 
@@ -34,17 +34,12 @@ const ExpenseFilters = ({
             onChange={(e) =>
               onCategoryChange(e.target.value)
             }
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-900"
           >
-            <option value="">
-              All Categories
-            </option>
+            <option value="">All Categories</option>
 
             {categories.map((item) => (
-              <option
-                key={item}
-                value={item}
-              >
+              <option key={item} value={item}>
                 {item}
               </option>
             ))}
@@ -52,7 +47,7 @@ const ExpenseFilters = ({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Start Date
           </label>
 
@@ -60,16 +55,14 @@ const ExpenseFilters = ({
             type="date"
             value={startDate}
             onChange={(e) =>
-              onStartDateChange(
-                e.target.value
-              )
+              onStartDateChange(e.target.value)
             }
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-900"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             End Date
           </label>
 
@@ -77,11 +70,9 @@ const ExpenseFilters = ({
             type="date"
             value={endDate}
             onChange={(e) =>
-              onEndDateChange(
-                e.target.value
-              )
+              onEndDateChange(e.target.value)
             }
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-900"
           />
         </div>
 
@@ -89,7 +80,7 @@ const ExpenseFilters = ({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           >
             <RotateCcw size={16} />
             Reset Filters

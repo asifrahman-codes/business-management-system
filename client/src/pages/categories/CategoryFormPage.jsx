@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -21,7 +24,9 @@ function CategoryFormPage() {
 
   const isEditMode = Boolean(id);
 
-  const [loading, setLoading] = useState(isEditMode);
+  const [loading, setLoading] =
+    useState(isEditMode);
+
   const [error, setError] = useState("");
 
   const {
@@ -92,7 +97,7 @@ function CategoryFormPage() {
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           {isEditMode
             ? "Edit Category"
             : "Add Category"}
@@ -107,41 +112,41 @@ function CategoryFormPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-2xl rounded-xl border bg-white p-6 shadow-sm"
+        className="max-w-2xl rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900"
       >
         <div className="space-y-5">
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Category Name
             </label>
 
             <input
               {...register("name")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
               placeholder="e.g. Beverages"
             />
 
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600">
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
                 {errors.name.message}
               </p>
             )}
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Description
             </label>
 
             <textarea
               {...register("description")}
               rows={4}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
               placeholder="Category description..."
             />
 
             {errors.description && (
-              <p className="mt-1 text-sm text-red-600">
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
                 {errors.description.message}
               </p>
             )}
@@ -154,7 +159,7 @@ function CategoryFormPage() {
             onClick={() =>
               navigate("/categories")
             }
-            className="rounded-lg border px-5 py-2.5 text-sm font-medium text-gray-700"
+            className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Cancel
           </button>
@@ -162,7 +167,7 @@ function CategoryFormPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+            className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
             {isSubmitting
               ? "Saving..."

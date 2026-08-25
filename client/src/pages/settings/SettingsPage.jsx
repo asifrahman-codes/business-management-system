@@ -151,7 +151,7 @@ const SettingsPage = () => {
   if (loading) {
     return (
       <div className="flex min-h-[300px] items-center justify-center">
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           Loading settings...
         </div>
       </div>
@@ -163,16 +163,16 @@ const SettingsPage = () => {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-blue-50 p-3 text-blue-600">
+          <div className="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
             <Settings size={24} />
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               Settings
             </h1>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Manage your business information
               and system settings
             </p>
@@ -182,7 +182,7 @@ const SettingsPage = () => {
 
       {/* Error */}
       {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
           <AlertCircle
             size={20}
             className="mt-0.5 shrink-0"
@@ -196,7 +196,7 @@ const SettingsPage = () => {
 
       {/* Success */}
       {message && (
-        <div className="flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">
+        <div className="flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700 dark:border-green-900 dark:bg-green-950/40 dark:text-green-400">
           <CheckCircle2
             size={20}
             className="shrink-0"
@@ -211,15 +211,15 @@ const SettingsPage = () => {
       {/* Settings Form */}
       <form
         onSubmit={handleSubmit}
-        className="rounded-xl border border-gray-200 bg-white shadow-sm"
+        className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
       >
         {/* Business Information */}
-        <div className="border-b border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Business Information
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Information displayed throughout
             the business management system.
           </p>
@@ -227,7 +227,7 @@ const SettingsPage = () => {
           <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
             {/* Shop Name */}
             <div className="md:col-span-2">
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Shop Name
               </label>
 
@@ -242,13 +242,13 @@ const SettingsPage = () => {
                 }
                 maxLength={150}
                 placeholder="Enter shop name"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
 
             {/* Address */}
             <div className="md:col-span-2">
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Shop Address
               </label>
 
@@ -263,13 +263,13 @@ const SettingsPage = () => {
                 maxLength={300}
                 rows={3}
                 placeholder="Enter shop address"
-                className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full resize-none rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
 
             {/* Phone */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Phone
               </label>
 
@@ -284,13 +284,13 @@ const SettingsPage = () => {
                 }
                 maxLength={30}
                 placeholder="e.g. 03001234567"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email
               </label>
 
@@ -305,19 +305,19 @@ const SettingsPage = () => {
                 }
                 maxLength={150}
                 placeholder="shop@example.com"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
           </div>
         </div>
 
         {/* Financial Settings */}
-        <div className="border-b border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Financial Settings
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Configure currency and default tax
             settings.
           </p>
@@ -325,7 +325,7 @@ const SettingsPage = () => {
           <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
             {/* Tax Rate */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Tax Rate (%)
               </label>
 
@@ -341,13 +341,13 @@ const SettingsPage = () => {
                 min="0"
                 max="100"
                 step="0.01"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
 
             {/* Currency */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Currency
               </label>
 
@@ -362,21 +362,19 @@ const SettingsPage = () => {
                 }
                 maxLength={10}
                 placeholder="PKR"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm uppercase outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm uppercase text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
 
             {/* Currency Symbol */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Currency Symbol
               </label>
 
               <input
                 type="text"
-                value={
-                  form.currencySymbol
-                }
+                value={form.currencySymbol}
                 onChange={(e) =>
                   handleChange(
                     "currencySymbol",
@@ -385,7 +383,7 @@ const SettingsPage = () => {
                 }
                 maxLength={5}
                 placeholder="Rs."
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-900"
               />
             </div>
           </div>
