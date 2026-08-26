@@ -1,74 +1,87 @@
 const Joi = require("joi");
 
-const createEmployeeSchema = Joi.object({
-  name: Joi.string()
-    .trim()
-    .min(2)
-    .max(100)
-    .required(),
+const createEmployeeSchema =
+  Joi.object({
+    name: Joi.string()
+      .trim()
+      .min(2)
+      .max(100)
+      .required(),
 
-  position: Joi.string()
-    .trim()
-    .min(2)
-    .max(100)
-    .required(),
+    position: Joi.string()
+      .trim()
+      .min(2)
+      .max(100)
+      .required(),
 
-  phone: Joi.string()
-    .trim()
-    .min(7)
-    .max(30)
-    .required(),
+    phone: Joi.string()
+      .trim()
+      .min(7)
+      .max(30)
+      .required(),
 
-  email: Joi.string()
-    .trim()
-    .email()
-    .max(150)
-    .allow("", null),
+    email: Joi.string()
+      .trim()
+      .email()
+      .max(150)
+      .allow("", null),
 
-  joiningDate: Joi.date()
-    .required(),
+    password: Joi.string()
+      .min(8)
+      .max(100)
+      .allow("", null),
 
-  baseSalary: Joi.number()
-    .positive()
-    .required(),
+    joiningDate: Joi.date()
+      .required(),
 
-  status: Joi.string()
-    .valid("ACTIVE", "INACTIVE")
-    .default("ACTIVE"),
-});
+    baseSalary: Joi.number()
+      .positive()
+      .required(),
 
-const updateEmployeeSchema = Joi.object({
-  name: Joi.string()
-    .trim()
-    .min(2)
-    .max(100),
+    status: Joi.string()
+      .valid(
+        "ACTIVE",
+        "INACTIVE"
+      )
+      .default("ACTIVE"),
+  });
 
-  position: Joi.string()
-    .trim()
-    .min(2)
-    .max(100),
+const updateEmployeeSchema =
+  Joi.object({
+    name: Joi.string()
+      .trim()
+      .min(2)
+      .max(100),
 
-  phone: Joi.string()
-    .trim()
-    .min(7)
-    .max(30),
+    position: Joi.string()
+      .trim()
+      .min(2)
+      .max(100),
 
-  email: Joi.string()
-    .trim()
-    .email()
-    .max(150)
-    .allow("", null),
+    phone: Joi.string()
+      .trim()
+      .min(7)
+      .max(30),
 
-  joiningDate: Joi.date(),
+    email: Joi.string()
+      .trim()
+      .email()
+      .max(150)
+      .allow("", null),
 
-  baseSalary: Joi.number()
-    .positive(),
-}).min(1);
+    joiningDate: Joi.date(),
+
+    baseSalary: Joi.number()
+      .positive(),
+  }).min(1);
 
 const updateEmployeeStatusSchema =
   Joi.object({
     status: Joi.string()
-      .valid("ACTIVE", "INACTIVE")
+      .valid(
+        "ACTIVE",
+        "INACTIVE"
+      )
       .required(),
   });
 

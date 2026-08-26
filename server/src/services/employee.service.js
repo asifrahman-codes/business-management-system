@@ -6,19 +6,122 @@ const AppError = require(
   "../utils/app-error.util"
 );
 
+const User = require(
+  "../models/User.model"
+);
+
 const {
   isValidObjectId,
 } = require(
   "../utils/validate-object-id"
 );
 
+/*
+ * Create Employee
+ *
+ * If position is Cashier:
+ * - Create Employee
+ * - Create User login account
+ */
 const createEmployee = async (
   employeeData
 ) => {
-  return await employeeRepository
-    .createEmployee(employeeData);
+  const {
+    name,
+    email,
+    password,
+    position,
+    ...employeeFields
+  } = employeeData;
+
+  const isCashier =
+    position.trim().toLowerCase() ===
+    "cashier";
+
+  /*
+   * Cashier must have login credentials.
+   */
+  if (isCashier) {
+    if (!email) {
+      throw new AppError(
+        "Email is required for cashier login",
+        400
+      );
+    }
+
+    if (!password) {
+      throw new AppError(
+        "Password is required for cashier login",
+        400
+      );
+    }
+
+    if (password.length < 8) {
+      throw new AppError(
+        "Password must be at least 8 characters",
+        400
+      );
+    }
+
+    /*
+     * Check if email already belongs
+     * to another login account.
+     */
+    const existingUser =
+      await User.findOne({
+        email: email.toLowerCase(),
+      });
+
+    if (existingUser) {
+      throw new AppError(
+        "A user with this email already exists",
+        409
+      );
+    }
+  }
+
+  /*
+   * Create employee record.
+   */
+  const employee =
+    await employeeRepository.createEmployee({
+      name,
+      email,
+      position,
+      ...employeeFields,
+    });
+
+  /*
+   * Create login account for cashier.
+   */
+  if (isCashier) {
+    try {
+      await User.create({
+        name,
+        email,
+        password,
+        role: "cashier",
+        isActive: true,
+      });
+    } catch (error) {
+      /*
+       * If User creation fails,
+       * remove the employee we just created.
+       */
+      await employeeRepository.deleteEmployee(
+        employee._id
+      );
+
+      throw error;
+    }
+  }
+
+  return employee;
 };
 
+/*
+ * Get Employees
+ */
 const getEmployees = async ({
   page = 1,
   limit = 10,
@@ -60,8 +163,8 @@ const getEmployees = async ({
   const {
     employees,
     total,
-  } = await employeeRepository
-    .getEmployees({
+  } =
+    await employeeRepository.getEmployees({
       filter,
       skip,
       limit,
@@ -79,6 +182,9 @@ const getEmployees = async ({
   };
 };
 
+/*
+ * Get Employee By ID
+ */
 const getEmployeeById = async (
   employeeId
 ) => {
@@ -103,6 +209,9 @@ const getEmployeeById = async (
   return employee;
 };
 
+/*
+ * Update Employee
+ */
 const updateEmployee = async (
   employeeId,
   employeeData
@@ -131,6 +240,9 @@ const updateEmployee = async (
   return employee;
 };
 
+/*
+ * Update Employee Status
+ */
 const updateEmployeeStatus = async (
   employeeId,
   status
@@ -159,6 +271,9 @@ const updateEmployeeStatus = async (
   return employee;
 };
 
+/*
+ * Delete Employee
+ */
 const deleteEmployee = async (
   employeeId
 ) => {

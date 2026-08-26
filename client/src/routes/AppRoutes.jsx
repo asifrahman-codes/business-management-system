@@ -38,20 +38,21 @@ import SaleReceiptPage from "../pages/sales/SaleReceiptPage";
 
 import EmployeesPage from "../pages/employees/EmployeesPage";
 
-import Expenses from "../pages/expenses/ExpensesPage";
+import ExpensesPage from "../pages/expenses/ExpensesPage";
 
 import SalaryPaymentsPage from "../pages/salary/SalaryPaymentsPage";
 
 import ReportsPage from "../pages/reports/ReportsPage";
 
 import SettingsPage from "../pages/settings/SettingsPage";
-import ExpensesPage from "../pages/expenses/ExpensesPage";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public routes */}
+        {/* =========================
+            Public Routes
+        ========================== */}
 
         <Route
           path="/"
@@ -73,19 +74,26 @@ function AppRoutes() {
           element={<UnauthorizedPage />}
         />
 
-        {/* Protected routes */}
+        {/* =========================
+            Protected Routes
+        ========================== */}
 
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
 
-            {/* Dashboard */}
+            {/* =========================
+                Dashboard
+                Admin + Cashier
+            ========================== */}
 
             <Route
               path="/dashboard"
               element={<DashboardPage />}
             />
 
-            {/* Admin routes */}
+            {/* =========================
+                Admin Only Routes
+            ========================== */}
 
             <Route
               element={
@@ -189,35 +197,24 @@ function AppRoutes() {
                 }
               />
 
+              {/* Reports */}
+
               <Route
-              path="/reports"
-              element={<ReportsPage />}
+                path="/reports"
+                element={<ReportsPage />}
               />
 
+              {/* Settings */}
+
               <Route
-  path="/sales"
-  element={<SalesPage />}
-/>
-
-<Route
-  path="/sales/:id"
-  element={<SaleDetailsPage />}
-/>
-
-<Route
-  path="/sales/:id/receipt"
-  element={<SaleReceiptPage />}
-/>
-<Route
-  path="/settings"
-  element={
-    <SettingsPage />
-  }
-/>
-
+                path="/settings"
+                element={<SettingsPage />}
+              />
             </Route>
 
-            {/* Admin + Cashier routes */}
+            {/* =========================
+                Admin + Cashier Routes
+            ========================== */}
 
             <Route
               element={
@@ -247,11 +244,19 @@ function AppRoutes() {
                 path="/sales/:id"
                 element={<SaleDetailsPage />}
               />
+
+              <Route
+                path="/sales/:id/receipt"
+                element={<SaleReceiptPage />}
+              />
             </Route>
+
           </Route>
         </Route>
 
-        {/* 404 */}
+        {/* =========================
+            404
+        ========================== */}
 
         <Route
           path="*"

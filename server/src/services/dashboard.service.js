@@ -3,49 +3,123 @@ const Expense = require("../models/expense.model");
 const Product = require("../models/product.model");
 
 const getDashboardSummary = async () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
 
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
 
-  // 1. Today's Sales
-  const todaySales = await Sale.aggregate([
-    { $match: { createdAt: { $gte: today } } },
-    { $group: { _id: null, total: { $sum: "$grandTotal" } } }
-  ]);
+  const startOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    1
+  );
 
-  // 2. Monthly Sales
-  const monthlySales = await Sale.aggregate([
-    { $match: { createdAt: { $gte: startOfMonth } } },
-    { $group: { _id: null, total: { $sum: "$grandTotal" } } }
-  ]);
-
-  // 3. Monthly Expenses
-  const monthlyExpenses = await Expense.aggregate([
-    { $match: { date: { $gte: startOfMonth } } },
-    { $group: { _id: null, total: { $sum: "$amount" } } }
-  ]);
-
-  // 4. Stock Alerts
   const futureDate = new Date();
-  futureDate.setDate(futureDate.getDate() + 30);
+  futureDate.setDate(
+    futureDate.getDate() + 30
+  );
 
-  const [lowStockCount, expiryCount] = await Promise.all([
-    Product.countDocuments({ $expr: { $lte: ["$quantityInStock", "$reorderLevel"] } }),
-    Product.countDocuments({ expiryDate: { $lte: futureDate } })
+  const [
+    todaySalesResult,
+    monthlySalesResult,
+    monthlyExpensesResult,
+    lowStockCount,
+    expiryCount,
+  ] = await Promise.all([
+    Sale.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfToday,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$grandTotal",
+          },
+        },
+      },
+    ]),
+
+    Sale.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfMonth,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$grandTotal",
+          },
+        },
+      },
+    ]),
+
+    Expense.aggregate([
+      {
+        $match: {
+          date: {
+            $gte: startOfMonth,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$amount",
+          },
+        },
+      },
+    ]),
+
+    Product.countDocuments({
+      $expr: {
+        $lte: [
+          "$quantityInStock",
+          "$reorderLevel",
+        ],
+      },
+    }),
+
+    Product.countDocuments({
+      expiryDate: {
+        $gte: now,
+        $lte: futureDate,
+      },
+    }),
   ]);
 
-  const salesTotal = monthlySales[0]?.total || 0;
-  const expenseTotal = monthlyExpenses[0]?.total || 0;
+  const todaySales =
+    todaySalesResult[0]?.total || 0;
+
+  const monthlySales =
+    monthlySalesResult[0]?.total || 0;
+
+  const monthlyExpenses =
+    monthlyExpensesResult[0]?.total || 0;
 
   return {
-    todaySales: todaySales[0]?.total || 0,
-    monthlySales: salesTotal,
-    monthlyExpenses: expenseTotal,
-    netProfit: salesTotal - expenseTotal,
+    todaySales,
+    monthlySales,
+    monthlyExpenses,
+    netProfit:
+      monthlySales - monthlyExpenses,
     lowStockCount,
-    expiryCount
+    expiryCount,
   };
 };
 
-module.exports = { getDashboardSummary };
+module.exports = {
+  getDashboardSummary,
+};
