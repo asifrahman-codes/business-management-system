@@ -56,7 +56,7 @@ const settingsRoutes =
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (req, res) => {
+app.get("/", (req, res) => {
   const databaseStatus =
     mongoose.connection.readyState === 1
       ? "connected"

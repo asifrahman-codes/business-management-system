@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../../.env"),
+});
 
 const connectDatabase = require("../config/db");
 const User = require("../models/User.model");
@@ -18,11 +20,13 @@ const createAdmin = async () => {
     await connectDatabase();
 
     const existingAdmin = await User.findOne({
-      role: "admin",
+      email: process.env.ADMIN_EMAIL,
     });
 
     if (existingAdmin) {
-      console.log("An admin account already exists.");
+      console.log(
+        "A user with this email already exists."
+      );
       process.exit(0);
     }
 
